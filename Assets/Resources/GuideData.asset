@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf08f953d3f1b4b05a497d20e6e945df, type: 3}
+  m_Name: GuideData
+  m_EditorClassIdentifier: 
+  guideItems:
+  - image1: {fileID: 21300000, guid: 0d8475dc9f9914d61abb1b1c48bab3c1, type: 3}
+    image2: {fileID: 21300000, guid: a9b1a935b084041118f7388d0788b5bf, type: 3}
+    image3: {fileID: 21300000, guid: a44f9900a0e894946b5ef8e1054f6f14, type: 3}
+  - image1: {fileID: 21300000, guid: 5aa5b5fc5531f4e5f8f3053dc848d1b0, type: 3}
+    image2: {fileID: 21300000, guid: 4c59dddf9a4354b49b228b7a8c6e51da, type: 3}
+    image3: {fileID: 21300000, guid: 4b96c3d795c1c495f9fe1dedace30663, type: 3}
+  - image1: {fileID: 21300000, guid: 9e1e281ff4bf24c70b904824ded1029c, type: 3}
+    image2: {fileID: 21300000, guid: 29319aa22711e4bb3a2d03654b3d7590, type: 3}
+    image3: {fileID: 21300000, guid: e2eaedc9834294bd5b57d62ea28ceb4a, type: 3}

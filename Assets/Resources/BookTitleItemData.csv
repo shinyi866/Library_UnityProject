@@ -1,0 +1,12 @@
+,name,Image
+Animal,動物,Assets/ArtSprite/icon/sort_icon/animal/animal-512px.png
+Area,地區,Assets/ArtSprite/icon/sort_icon/area/area-512px.png
+Art,藝術,Assets/ArtSprite/icon/sort_icon/art/art-512px.png
+Cognition,認知,Assets/ArtSprite/icon/sort_icon/cognition/cognition-512px.png
+Math,數學,Assets/ArtSprite/icon/sort_icon/math/math-512px.png
+Natural,自然,Assets/ArtSprite/icon/sort_icon/natural/natural-512px.png
+Role,角色,Assets/ArtSprite/icon/sort_icon/role/role-512px.png
+Science,科學,Assets/ArtSprite/icon/sort_icon/science/science-512px.png
+Society,社會,Assets/ArtSprite/icon/sort_icon/society/society-512px.png
+Sport,運動,Assets/ArtSprite/icon/sort_icon/sport/sport-512px.png
+Traffic,交通,Assets/ArtSprite/icon/sort_icon/traffic/traffic-512px.png

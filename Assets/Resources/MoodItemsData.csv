@@ -1,0 +1,7 @@
+,name,image,image_noShadow
+Happy,快樂,Assets/ArtSprite/icon/mood/shadow/happy_512px_shadow_mood.png,Assets/ArtSprite/icon/mood/no_shadow/happy_512px_no_shadow_mood.png
+Surprise,驚奇,Assets/ArtSprite/icon/mood/shadow/wow_512px_shadow_mood.png,Assets/ArtSprite/icon/mood/no_shadow/wow_512px_no_shadow_mood.png
+Angry,生氣,Assets/ArtSprite/icon/mood/shadow/angry_512px_shadow_mood.png,Assets/ArtSprite/icon/mood/no_shadow/angry_512px_no_shadow_mood.png
+Scared,可怕,Assets/ArtSprite/icon/mood/shadow/scared_512px_shadow_mood.png,Assets/ArtSprite/icon/mood/no_shadow/scared_512px_no_shadow_mood.png
+Hate,討厭,Assets/ArtSprite/icon/mood/shadow/hate_512px_shadow_mood.png,Assets/ArtSprite/icon/mood/no_shadow/hate_512px_no_shadow_mood.png
+Sad,悲傷,Assets/ArtSprite/icon/mood/shadow/sad_512px_shadow_mood.png,Assets/ArtSprite/icon/mood/no_shadow/sad_512px_no_shadow_mood.png
