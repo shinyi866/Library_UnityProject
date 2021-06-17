@@ -5,19 +5,19 @@ using System.Linq;
 
 namespace View
 {
-    public class Modals : MonoBehaviour
+    public class Views : MonoBehaviour
     {
         private Modal[] modals;
 
-        private static Modals _instance;
+        private static Views _instance;
 
-        public static Modals instance
+        public static Views instance
         {
             get
             {
                 if (_instance == null)
                 {
-                    _instance = FindObjectOfType<Modals>();
+                    _instance = FindObjectOfType<Views>();
                     _instance.SetUp();
                 }
 
@@ -26,19 +26,18 @@ namespace View
         }
 
         private Modal currentModal;
-        private Modal lastModal;
 
         public void SetUp()
         {
             modals = GetComponentsInChildren<Modal>();
         }
 
-        public T GetModel<T>() where T : Modal
+        public T GetView<T>() where T : Modal
         {
             return modals.First(x => typeof(T) == x.GetType()) as T;
         }
 
-        public T OpenModal<T>() where T : Modal
+        public T OpenView<T>() where T : Modal
         {
             if (modals == null) return null;
 
@@ -56,32 +55,20 @@ namespace View
 
             }
 
-            lastModal = currentModal;
             currentModal = targetModal;
 
             return targetModal as T;
         }
 
-        public void CloseModal()
+        public void CloseView()
         {
             if (currentModal != null)
                 currentModal.Show(false);
         }
 
-        public void CloseAllModal()
+        public void CloseAllView()
         {
             foreach (Modal modal in modals) { modal.Show(false); }
-        }
-
-        public void LastModal()
-        {
-            CloseAllModal();
-
-            lastModal.Show(true);
-
-            var current = currentModal;
-            currentModal = lastModal;
-            lastModal = current;
         }
     }
 }

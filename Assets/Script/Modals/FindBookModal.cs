@@ -18,6 +18,7 @@ public class FindBookModal : Modal
     private Transform moodItem;
 
     private AllItemObj.BookTitleItem[] titleItems;
+    private AllItemObj.MoodItem[] moodData;
     private List<Button> bookButtons = new List<Button>();
     private List<Button> moodButtons = new List<Button>();
 
@@ -29,7 +30,7 @@ public class FindBookModal : Modal
     private void CreateItem()
     {
         titleItems = MainApp.Instance.itemData.booksTitleItems;
-        var moodData = MainApp.Instance.itemData.moodItems;
+        moodData = MainApp.Instance.itemData.moodItems;
         var bookLength = titleItems.Length;
         var moodLength = moodData.Length;
 
@@ -72,6 +73,7 @@ public class FindBookModal : Modal
         }
 
         BookButtonClick();
+        MoodButtonClick();
     }
 
     private void BookButtonClick()
@@ -84,6 +86,20 @@ public class FindBookModal : Modal
             {
                 var modal = Modals.instance.OpenModal<FindBookClassifyModal>();
                 modal.CreateItem(closureIndex, titleItems[closureIndex].name);
+            });
+        }
+    }
+
+    private void MoodButtonClick()
+    {
+        for (int i = 0; i < moodButtons.Count; i++)
+        {
+            int closureIndex = i;
+
+            moodButtons[closureIndex].onClick.AddListener(() =>
+            {
+                var modal = Modals.instance.OpenModal<FindBookResultModal>();
+                modal.MoodResult(closureIndex, moodData[closureIndex].name);
             });
         }
     }

@@ -17,21 +17,20 @@ public class FindBookClassifyModal : Modal
     [SerializeField]
     private Button backButton;
 
-    private List<Transform> transformList = new List<Transform>(); 
+    private List<GameObject> classifyList = new List<GameObject>();
+    private string[] nameArray;
 
     private void Awake()
     {
-        backButton.onClick.AddListener(()=>
-        {
-            ClearList();
-            Modals.instance.BackToLastModal();
-        });
+        backButton.onClick.AddListener(() => { Modals.instance.OpenModal<FindBookModal>(); });
     }
 
     public void CreateItem(int index, string text)
     {
+        ClearList();
+
         var classifyData = MainApp.Instance.itemData.booksItems[index];
-        var nameArray = classifyData.name;
+        nameArray = classifyData.name;
         var imageArray = classifyData.image;
 
         titleText.text = text;
@@ -39,25 +38,38 @@ public class FindBookClassifyModal : Modal
         for (int i = 0; i < nameArray.Length; i++)
         {
             var itemObj = Instantiate(classifyItem, container);
-            //var button = itemObj.gameObject.GetComponent<Button>();
             var image = itemObj.gameObject.GetComponent<Image>();
             var txt = itemObj.gameObject.GetComponentInChildren<Text>();
 
             image.sprite = imageArray[i];
             txt.text = nameArray[i];
-            transformList.Add(itemObj);
+            classifyList.Add(itemObj.gameObject);
         }
 
+        BookButtonClick();
+    }
+
+    private void BookButtonClick()
+    {
+        for (int i = 0; i < classifyList.Count; i++)
+        {
+            int closureIndex = i;
+
+            classifyList[closureIndex].GetComponent<Button>().onClick.AddListener(() =>
+            {
+                var modal = Modals.instance.OpenModal<FindBookResultModal>();
+                modal.BookResult(closureIndex, nameArray[closureIndex]);
+            });
+        }
     }
 
     private void ClearList()
     {
-        if(transformList.Count != 0)
+        if(classifyList.Count != 0)
         {
-            foreach(var t in transformList) { Destroy(t.gameObject); }
-            foreach (var t in transformList) { Destroy(t.GetChild(0).gameObject); }
+            foreach(var t in classifyList) { Destroy(t); }
 
-            transformList.Clear();
+            classifyList.Clear();
         }
     }
 }
