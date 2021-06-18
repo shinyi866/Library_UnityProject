@@ -11,4 +11,11 @@
         Purple,
         White
     }
+
+    public enum GuideType
+    {
+        main,
+        ARfindBook,
+        classify
+    }
 }

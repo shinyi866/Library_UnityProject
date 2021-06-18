@@ -25,13 +25,7 @@ public class RemindView : Modal
     {
         CreateView();
         SetRect(600, 485);
-        /*
-        var _viewRect = _viewObject.GetComponent<RectTransform>();
 
-        _viewRect.sizeDelta = new Vector2(600, 485);
-        _viewRect.anchoredPosition = new Vector2(0, 0);
-        _viewRect.localScale = new Vector3(1, 1, 1);
-        */
         _viewObject.transform.GetChild(0).gameObject.SetActive(false);
 
         text.text = txt;
@@ -44,34 +38,40 @@ public class RemindView : Modal
     {
         CreateView();
         SetRect(600, 485);
-        /*
-        var _viewRect = _viewObject.GetComponent<RectTransform>();
 
-        _viewRect.sizeDelta = new Vector2(600, 485);
-        _viewRect.anchoredPosition = new Vector2(0, 0);
-        _viewRect.localScale = new Vector3(1, 1, 1);
-        */
         _viewObject.transform.GetChild(0).gameObject.SetActive(false);
 
         text.text = txt;
-        CreateButtons();
+        CreateButtons(StringAsset.RemindButton.goToStudy, StringAsset.RemindButton.back);
+    }
+
+    public void ShowImageRemindView_Pet(string _txt, Sprite _sprite)
+    {
+        CreateView();
+        SetRect(550, 850);
+
+        var imageRect = image.gameObject.GetComponent<RectTransform>();
+        imageRect.sizeDelta = new Vector2(300, 300);
+
+        var textRect = text.gameObject.GetComponent<RectTransform>();
+        textRect.sizeDelta = new Vector2(500, 295);
+        text.fontSize = 38;
+
+        image.sprite = _sprite;
+        text.text = _txt;
+
+        CreateButtons(StringAsset.RemindButton.back, StringAsset.RemindButton.confirm);
     }
 
     public void ShowImageRemindView(string _txt, Sprite _sprite)
     {
         CreateView();
         SetRect(550, 665);
-        /*
-        var _viewRect = _viewObject.GetComponent<RectTransform>();
 
-        _viewRect.sizeDelta = new Vector2(550, 665);
-        _viewRect.anchoredPosition = new Vector2(0, 0);
-        _viewRect.localScale = new Vector3(1, 1, 1);
-        */
         image.sprite = _sprite;
         text.text = _txt;
 
-        CreateButtons();
+        CreateButtons(StringAsset.RemindButton.back, StringAsset.RemindButton.confirm);
     }
 
     private void CreateView()
@@ -84,18 +84,24 @@ public class RemindView : Modal
         contentTransform = _viewObject.transform.GetChild(2);
     }
 
-    private void CreateButtons()
+    private void CreateButtons(string leftString, string rightString)
     {
         if(leftButton == null)
         {
-            leftButton = ButtonGenerate.Instance.SetViewButton(StringAsset.RemindButton.goToStudy, TypeFlag.UIColorType.Green);
+            leftButton = ButtonGenerate.Instance.SetViewButton(leftString, TypeFlag.UIColorType.Green);
             leftButton.transform.SetParent(contentTransform);
+
+            var _viewRect = leftButton.GetComponent<RectTransform>();
+            _viewRect.localScale = new Vector3(1, 1, 1);
         }
 
         if (rightButton == null)
         {
-            rightButton = ButtonGenerate.Instance.SetViewButton(StringAsset.RemindButton.back, TypeFlag.UIColorType.Orange);
+            rightButton = ButtonGenerate.Instance.SetViewButton(rightString, TypeFlag.UIColorType.Orange);
             rightButton.transform.SetParent(contentTransform);
+
+            var _viewRect = rightButton.GetComponent<RectTransform>();
+            _viewRect.localScale = new Vector3(1, 1, 1);
         }            
     }
 

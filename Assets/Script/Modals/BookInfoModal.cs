@@ -18,11 +18,19 @@ public class BookInfoModal : Modal
     [SerializeField]
     private Text titleText;
 
+    [SerializeField]
+    private GameObject imageObject;
+    [SerializeField]
+    private GameObject noImageObject;
+
     private Button leftButton;
     private Button rightButton;
 
     private Button remindLeftButton;
-    private Button remindRightButton;
+    private Button remindRightButton;    
+
+    private Image bookCoverImage;
+    private Button noImageButton;
 
     private void Awake()
     {
@@ -40,6 +48,8 @@ public class BookInfoModal : Modal
         titleText.text = StringAsset.BookInfo.info;
 
         DestoryView();
+        // TODO: check API have book cover or not
+        HaveBookCover(false);
         CreateButtons(StringAsset.BookInfo.saveStudy, StringAsset.BookInfo.findBook);
 
         leftButton.onClick.AddListener(() =>
@@ -64,6 +74,8 @@ public class BookInfoModal : Modal
 
         rightButton.onClick.AddListener(() =>
         {
+            var modal = Modals.instance.OpenModal<GuideModal>();
+            modal.ShowView(TypeFlag.GuideType.ARfindBook);
             // AR ibeacon
         });
     }
@@ -77,12 +89,14 @@ public class BookInfoModal : Modal
 
         leftButton.onClick.AddListener(() =>
         {
-            var view = Views.instance.OpenView<MoodView>();
+            var view = Views.instance.OpenView<LongView>();
             view.ShowMoodView();
         });
 
         rightButton.onClick.AddListener(() =>
         {
+            var modal = Modals.instance.OpenModal<GuideModal>();
+            modal.ShowView(TypeFlag.GuideType.ARfindBook);
             // AR ibeacon
         });
     }
@@ -96,12 +110,14 @@ public class BookInfoModal : Modal
 
         leftButton.onClick.AddListener(() =>
         {
-            var view = Views.instance.OpenView<MoodView>();
+            var view = Views.instance.OpenView<LongView>();
             view.ShowClassifyView();
         });
 
         rightButton.onClick.AddListener(() =>
         {
+            var modal = Modals.instance.OpenModal<GuideModal>();
+            modal.ShowView(TypeFlag.GuideType.ARfindBook);
             // AR ibeacon
         });
     }
@@ -113,6 +129,27 @@ public class BookInfoModal : Modal
 
         rightButton = ButtonGenerate.Instance.SetModalButton(rightString, TypeFlag.UIColorType.Orange);
         rightButton.transform.SetParent(buttonTransform);
+    }
+
+    private void HaveBookCover(bool isOpen)
+    {
+        imageObject.SetActive(isOpen);
+        noImageObject.SetActive(!isOpen);
+
+        bookCoverImage = imageObject.GetComponent<Image>();
+        noImageButton = noImageObject.GetComponent<Button>();
+
+        noImageButton.onClick.AddListener(()=> {
+            var view = Views.instance.OpenView<RemindView>();
+            view.ShowOriginRemindView(StringAsset.TakePicture.takePicture);
+
+            view.button.onClick.AddListener(() => {
+                view.DestoryView();
+                Modals.instance.OpenModal<TakePictureModal>();
+                //TODO: close bar
+                //TODO: open camera
+            });
+        });
     }
 
     private void DestoryView()

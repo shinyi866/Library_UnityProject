@@ -104,8 +104,8 @@ MonoBehaviour:
     - "\u661F\u671F"
     image:
     - {fileID: 21300000, guid: 7a65883779a284eee8986914e315a691, type: 3}
-    - {fileID: 21300000, guid: e7956db7c45bc441e93f23bea65d2df3, type: 3}
     - {fileID: 21300000, guid: ddc1674843172425dbe411a648afab2f, type: 3}
+    - {fileID: 21300000, guid: 0e651943c5284482b90f960de7b12621, type: 3}
     - {fileID: 21300000, guid: 34d422cd3642745879c6f590edd7d4c4, type: 3}
     - {fileID: 21300000, guid: 5fd8c17cd73bc47ecb4aa3c62e821629, type: 3}
   - name:
@@ -121,7 +121,7 @@ MonoBehaviour:
     - {fileID: 21300000, guid: b76d7e53c92e940658b7b8a8b14d4ba8, type: 3}
     - {fileID: 21300000, guid: a772d012690774ceda6d4b9a4eb726e6, type: 3}
     - {fileID: 21300000, guid: 8cc3685302a9f48b08504ceb159285ec, type: 3}
-    - {fileID: 21300000, guid: 7aad50ee150e647d3a7f88937f5f4bff, type: 3}
+    - {fileID: 21300000, guid: a30151ce006954a1f972a6e8f37d071a, type: 3}
     - {fileID: 21300000, guid: 427af6a3a9bdc4dc3921d4378ed15216, type: 3}
     - {fileID: 21300000, guid: 95511547faa6b4e0c8c793bc9d022fcc, type: 3}
     - {fileID: 21300000, guid: c551733ae279a4b3d94062096146be98, type: 3}
@@ -194,6 +194,10 @@ MonoBehaviour:
     - {fileID: 21300000, guid: b574e18b969ce4115bfb570c29470674, type: 3}
     - {fileID: 21300000, guid: 4e401fca2619f466586a63ce5068638f, type: 3}
     - {fileID: 21300000, guid: c7d54783e70ac491788d81bedd08b59e, type: 3}
+  - name:
+    - "\u65B0\u589E"
+    image:
+    - {fileID: 21300000, guid: 1494e5c84b532453988dd7b8663b72c0, type: 3}
   moodItems:
   - name: "\u5FEB\u6A02"
     image: {fileID: 21300000, guid: 9356d78dc85d7423c8c5468265032be7, type: 3}
@@ -216,19 +220,25 @@ MonoBehaviour:
   petsItems:
   - name: "\u9AD8\u9AD8 (Gao)"
     image: {fileID: 21300000, guid: 7e16446d9f1d5491c8dea61a753a315c, type: 3}
-    info: "\u9AD8\u9AD8\u559C\u6B61\u5148\u5DE6\u53F3\u770B\u770B\u5F8C\uFF0C\u518D\u51FA\u767C\u53BB\u627E\u4ED6\u60F3\u770B\u7684\u66F8\u3002"
+    info: "\u9AD8\u9AD8\u559C\u6B61\u5148\u5DE6\u53F3\u770B\u770B\u5F8C\uFF0C\u518D\u51FA\u767C\u53BB\u627E\u4ED6\u60F3\u770B\u7684\u66F8\u3002
+      \u4F60\u60F3\u9078\u64C7\u9AD8\u9AD8\u55CE\uFF1F"
   - name: "\u5192\u5192 (Mao)"
     image: {fileID: 21300000, guid: f9547dc3de45342f3a7ed7e3464a144b, type: 3}
-    info: "\u5192\u5192\u559C\u6B61\u81EA\u5DF1\u884C\u52D5\uFF0C\u6703\u4E00\u500B\u4EBA\u53BB\u627E\u6709\u8208\u8DA3\u7684\u66F8\u4F86\u770B\u3002"
+    info: "\u5192\u5192\u559C\u6B61\u81EA\u5DF1\u884C\u52D5\uFF0C\u6703\u4E00\u500B\u4EBA\u53BB\u627E\u6709\u8208\u8DA3\u7684\u66F8\u4F86\u770B\u3002
+      \u4F60\u60F3\u9078\u64C7\u5192\u5192\u55CE\uFF1F"
   - name: "\u975C\u975C (Jin)"
     image: {fileID: 21300000, guid: 908e4d371a43946a6b9c5f876ea0c2ef, type: 3}
-    info: "\u975C\u975C\u4E00\u627E\u5230\u559C\u6B61\u7684\u5730\u65B9\uFF0C\u5C31\u80FD\u5750\u5728\u90A3\u908A\u770B\u5F88\u4E45\u7684\u66F8\u3002"
+    info: "\u975C\u975C\u4E00\u627E\u5230\u559C\u6B61\u7684\u5730\u65B9\uFF0C\u5C31\u80FD\u5750\u5728\u90A3\u908A\u770B\u5F88\u4E45\u7684\u66F8\u3002
+      \u4F60\u60F3\u9078\u64C7\u975C\u975C\u55CE\uFF1F"
   - name: "\u60A0\u60A0 (Yoyo)"
     image: {fileID: 21300000, guid: ab3c32302a5e64aa9ab44c4ed7da78a8, type: 3}
-    info: "\u60A0\u60A0\u96D6\u7136\u61F6\u6D0B\u6D0B\u7684\uFF0C\u4F46\u662F\u4ED6\u7E3D\u662F\u80FD\u627E\u5230\u60F3\u770B\u7684\u66F8\u3002"
+    info: "\u60A0\u60A0\u96D6\u7136\u61F6\u6D0B\u6D0B\u7684\uFF0C\u4F46\u662F\u4ED6\u7E3D\u662F\u80FD\u627E\u5230\u60F3\u770B\u7684\u66F8\u3002
+      \u4F60\u60F3\u9078\u64C7\u60A0\u60A0\u55CE\uFF1F"
   - name: "\u8E66\u8E66 (Beng)"
     image: {fileID: 21300000, guid: 04ce5eacbef94440eb47fcc14f53a2e6, type: 3}
-    info: "\u8E66\u8E66\u6700\u611B\u5230\u8655\u901B\u901B\uFF0C\u5404\u5F0F\u5404\u6A23\u7684\u66F8\u4ED6\u90FD\u6703\u770B\u3002"
+    info: "\u8E66\u8E66\u6700\u611B\u5230\u8655\u901B\u901B\uFF0C\u5404\u5F0F\u5404\u6A23\u7684\u66F8\u4ED6\u90FD\u6703\u770B\u3002
+      \u4F60\u60F3\u9078\u64C7\u8E66\u8E66\u55CE\uFF1F"
   - name: "\u5DE7\u5DE7 (Ciao)"
     image: {fileID: 21300000, guid: d78d73506a0324705acd1de9e6671fd1, type: 3}
-    info: "\u5DE7\u5DE7\u4E0D\u559C\u6B61\u81EA\u5DF1\u4E00\u500B\u4EBA\uFF0C\u4ED6\u559C\u6B61\u6709\u4EBA\u966A\u4ED6\u4E00\u8D77\u770B\u66F8\u3002"
+    info: "\u5DE7\u5DE7\u4E0D\u559C\u6B61\u81EA\u5DF1\u4E00\u500B\u4EBA\uFF0C\u4ED6\u559C\u6B61\u6709\u4EBA\u966A\u4ED6\u4E00\u8D77\u770B\u66F8\u3002
+      \u4F60\u60F3\u9078\u64C7\u5DE7\u5DE7\u55CE\uFF1F"

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using View;
 
-public class MoodView : Modal
+public class LongView : Modal
 {
     [SerializeField]
     private GameObject viewObject;
@@ -16,7 +16,7 @@ public class MoodView : Modal
     private Text text;
     private Button closeButton;
     private AllItemObj.MoodItem[] moodData;
-    private AllItemObj.BookTitleItem[] titleItems;
+    private AllItemObj.BookItem classifyData;
     private List<string> nameList = new List<string>();
     private List<Button> moodButtons = new List<Button>();
     private List<Button> bookButtons = new List<Button>();
@@ -36,23 +36,23 @@ public class MoodView : Modal
 
     private void CreateClassifyItem()
     {
-        titleItems = MainApp.Instance.itemData.booksTitleItems;
-        var bookLength = titleItems.Length;
+        classifyData = MainApp.Instance.itemData.booksItems[10]; //TODO: API book classifyData
+        var bookLength = classifyData.image.Length;
 
         for (int i = 0; i < bookLength; i++)
         {
-            if (i < bookLength / 2)
-            {
-                var itemObj = Instantiate(item, contentTransform);
-                var button = itemObj.gameObject.GetComponent<Button>();
-                var image = itemObj.gameObject.GetComponent<Image>();
-                var txt = itemObj.gameObject.GetComponentInChildren<Text>();
+            var itemObj = Instantiate(item, contentTransform);
+            var button = itemObj.gameObject.GetComponent<Button>();
+            var image = itemObj.gameObject.GetComponent<Image>();
+            var txt = itemObj.gameObject.GetComponentInChildren<Text>();
 
-                image.sprite = titleItems[i].image;
-                txt.text = titleItems[i].name;
-                bookButtons.Add(button);
-            }
+            image.sprite = classifyData.image[i];
+            txt.text = classifyData.name[i];
+            bookButtons.Add(button);
         }
+
+        if (bookLength < 5)
+            CreateAddButton();
 
         BookButtonClick();
     }
@@ -76,6 +76,24 @@ public class MoodView : Modal
         }
 
         MoodButtonClick();
+    }
+
+    private void CreateAddButton()
+    {
+        var itemObj = Instantiate(item, contentTransform);
+        var button = itemObj.gameObject.GetComponent<Button>();
+        var image = itemObj.gameObject.GetComponent<Image>();
+        var txt = itemObj.gameObject.GetComponentInChildren<Text>();
+
+        image.sprite = MainApp.Instance.itemData.booksItems[11].image[0];
+        txt.text = MainApp.Instance.itemData.booksItems[11].name[0];
+
+        button.onClick.AddListener(() =>
+        {
+            Modals.instance.OpenModal<BookClassifyModal>();
+            DestoryView();
+            Views.instance.CloseView();
+        });
     }
 
     private void BookButtonClick()

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using View;
 
 public class MainApp : Singleton<MainApp>
 {
@@ -17,4 +18,20 @@ public class MainApp : Singleton<MainApp>
     [SerializeField]
     private UIColorObj _uiColorData;
     public UIColorObj uiColorData => _uiColorData;
+
+    private int playerGuide;
+
+    private void Start()
+    {
+        playerGuide = PlayerPrefs.GetInt("hasPlay");
+
+        if (playerGuide != 1)
+        {
+            var modal = Modals.instance.OpenModal<GuideModal>();
+            modal.ShowView((int)TypeFlag.GuideType.main);
+            // TODO: last button
+
+            PlayerPrefs.SetInt("hasPlay", 1);
+        }
+    }
 }

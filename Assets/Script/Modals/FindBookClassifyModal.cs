@@ -18,7 +18,7 @@ public class FindBookClassifyModal : Modal
     private Button backButton;
 
     private List<GameObject> classifyList = new List<GameObject>();
-    private string[] nameArray;
+    private AllItemObj.BookItem classifyData;
 
     private void Awake()
     {
@@ -29,8 +29,8 @@ public class FindBookClassifyModal : Modal
     {
         ClearList();
 
-        var classifyData = MainApp.Instance.itemData.booksItems[index];
-        nameArray = classifyData.name;
+        classifyData = MainApp.Instance.itemData.booksItems[index];
+        var nameArray = classifyData.name;
         var imageArray = classifyData.image;
 
         titleText.text = text;
@@ -58,7 +58,7 @@ public class FindBookClassifyModal : Modal
             classifyList[closureIndex].GetComponent<Button>().onClick.AddListener(() =>
             {
                 var modal = Modals.instance.OpenModal<FindBookResultModal>();
-                modal.BookResult(closureIndex, nameArray[closureIndex]);
+                modal.BookResult(closureIndex, classifyData.name[closureIndex]);
             });
         }
     }
