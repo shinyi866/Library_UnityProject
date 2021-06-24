@@ -13,6 +13,7 @@ public class LongView : Modal
 
     private GameObject _viewObject;
     private Transform contentTransform;
+    private Transform transformSelf;
     private Text text;
     private Button closeButton;
     private AllItemObj.MoodItem[] moodData;
@@ -20,6 +21,11 @@ public class LongView : Modal
     private List<string> nameList = new List<string>();
     private List<Button> moodButtons = new List<Button>();
     private List<Button> bookButtons = new List<Button>();
+
+    private void Awake()
+    {
+        transformSelf = this.transform;
+    }
 
     public void ShowMoodView()
     {
@@ -149,8 +155,8 @@ public class LongView : Modal
     }
 
     private void CreateView(string titleText)
-    {
-        _viewObject = Instantiate(viewObject);
+    {        
+        _viewObject = Instantiate(viewObject, transformSelf);
         _viewObject.transform.SetParent(this.transform);
 
         var _viewRect = _viewObject.GetComponent<RectTransform>();

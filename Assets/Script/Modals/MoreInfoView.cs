@@ -30,7 +30,8 @@ public class MoreInfoView : Modal
         TextRect = text.gameObject.GetComponent<RectTransform>();
         closeButton = _viewObject.transform.GetChild(2).GetChild(0).gameObject.GetComponent<Button>();
 
-        var addHeight = (txt.Length)/10 * 50;
+        var row = Mathf.Ceil((txt.Length) / 8);
+        var addHeight = row * 50;
         TextRect.sizeDelta = new Vector2(475, addHeight);
 
         if (addHeight > 1100)

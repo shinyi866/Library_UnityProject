@@ -24,7 +24,7 @@ public class MainApp : Singleton<MainApp>
     private void Start()
     {
         playerGuide = PlayerPrefs.GetInt("hasPlay");
-
+        
         if (playerGuide != 1)
         {
             var modal = Modals.instance.OpenModal<GuideModal>();
