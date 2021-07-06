@@ -43,6 +43,12 @@
         public const string change = "更改分類";
     }
 
+    public class Mine
+    {
+        public const string achievement = "我的成就";
+        public const string study = "我的書房";
+    }
+
     public class TakePicture
     {
         public const string again = "重新拍攝";

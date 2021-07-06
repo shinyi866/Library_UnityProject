@@ -3,7 +3,6 @@ using UnityEngine.Networking;
 using UnityEngine;
 using UnityEngine.UI;
 using View;
-using System.Collections.Generic;
 using System.Linq;
 
 public class BookInfoModal : Modal
@@ -56,6 +55,59 @@ public class BookInfoModal : Modal
         AllItemObj = MainApp.Instance.itemData;
     }
 
+    public void BookInfoLoad(TypeFlag.BookDatabaseType bookData)
+    {
+        
+        barText.text = StringAsset.BookInfo.info;
+
+        DestoryView();
+
+        var hasCover = !string.IsNullOrEmpty(bookData.picture);
+
+        bookTitle.text = bookData.name;
+        HaveBookCover(hasCover);
+
+        moreInfoButton.onClick.AddListener(() =>
+        {
+            var view = Views.instance.OpenView<MoreInfoView>();
+            view.ShowView(bookData.info);
+        });
+
+        var count = bookData.classify.Count;
+
+        for (int i = 0; i <= count; i++)
+        {
+            var item = Instantiate(itemObject, classifyObject.transform);
+            var itemTxt = item.transform.GetChild(0).GetComponent<Text>();
+            var itemImage = item.GetComponent<Image>();
+
+            item.GetComponent<Button>().enabled = false;
+            itemTxt.color = Color.white;
+
+            if (i == count)
+            {
+                var moodObj = AllItemObj.moodItems[bookData.mood];
+
+                itemImage.sprite = moodObj.image;
+                itemTxt.text = moodObj.name;
+            }
+            else
+            {
+                var titleString = bookData.classify[i].id;
+                var classifyIndex = bookData.classify[i].name;
+                var itemObj = AllItemObj.booksTitleItems.ToList();
+                var index = itemObj.FindIndex(x => x.name == titleString);
+
+                itemTxt.text = AllItemObj.booksItems[index].name[classifyIndex];
+                itemImage.sprite = AllItemObj.booksItems[index].image[classifyIndex];
+            }
+        }
+
+        CreateButtons(StringAsset.BookInfo.saveStudy, StringAsset.BookInfo.findBook);
+
+
+    }
+
     public void BookInfo()
     {
         string getBooksUrl = StringAsset.API.GetBookInfo;
@@ -106,9 +158,7 @@ public class BookInfoModal : Modal
                         var classifyIndex = bookData.classify[i].name;
                         var itemObj = AllItemObj.booksTitleItems.ToList();
                         var index = itemObj.FindIndex(x => x.name == titleString);
-                        Debug.Log("index " + index);
-                        Debug.Log("classifyIndex " + classifyIndex);
-                        Debug.Log("AllItemObj.booksItems[index].name[classifyIndex] " + AllItemObj.booksItems[index].name[classifyIndex]);
+
                         itemTxt.text = AllItemObj.booksItems[index].name[classifyIndex];
                         itemImage.sprite = AllItemObj.booksItems[index].image[classifyIndex];
                     }
@@ -199,6 +249,33 @@ public class BookInfoModal : Modal
         rightButton.transform.SetParent(buttonTransform);
         var rightButtonRect = rightButton.GetComponent<RectTransform>();
         rightButtonRect.localScale = new Vector3(1, 1, 1);
+
+        leftButton.onClick.AddListener(() =>
+        {
+            var view = Views.instance.OpenView<RemindView>();
+            view.ShowChooseRemindView(StringAsset.BookRemind.successToStudy);
+
+            remindLeftButton = view.leftButton;
+            remindLeftButton.onClick.AddListener(() =>
+            {
+                Modals.instance.OpenModal<MyStudyModal>();
+                view.DestoryView();
+            });
+
+            remindRightButton = view.rightButton;
+            remindRightButton.onClick.AddListener(() =>
+            {
+                view.DestoryView();
+                NotReadBook();
+            });
+        });
+
+        rightButton.onClick.AddListener(() =>
+        {
+            var modal = Modals.instance.OpenModal<GuideModal>();
+            modal.ShowView(TypeFlag.GuideType.ARfindBook);
+            // AR ibeacon
+        });
     }
 
     private void HaveBookCover(bool isOpen)

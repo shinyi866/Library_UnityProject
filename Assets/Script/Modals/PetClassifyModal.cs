@@ -18,7 +18,8 @@ public class PetClassifyModal : Modal
     private Image image;
     private Button button;
     private List<Button> buttons = new List<Button>();
-    private AllItemObj.PetsItem[] data;
+    private AllItemObj data;
+    private AllItemObj.PetsItem[] petsItems;
 
     private void Awake()
     {
@@ -32,8 +33,10 @@ public class PetClassifyModal : Modal
 
     private void CreateItem()
     {
-        data = MainApp.Instance.itemData.petsItems;
-        var dataLenght = data.Length;
+        data = MainApp.Instance.itemData;
+        petsItems = data.petsItems;
+
+        var dataLenght = petsItems.Length;
 
         for (int i = 0; i < dataLenght; i++)
         {
@@ -42,8 +45,8 @@ public class PetClassifyModal : Modal
             var image = itemObj.transform.GetChild(0).gameObject.GetComponent<Image>();
             var txt = itemObj.transform.GetChild(1).transform.GetChild(0).gameObject.GetComponentInChildren<Text>();
 
-            image.sprite = data[i].image;
-            txt.text = data[i].name;
+            image.sprite = petsItems[i].image;
+            txt.text = petsItems[i].name;
             buttons.Add(button);
         }
 
@@ -59,7 +62,7 @@ public class PetClassifyModal : Modal
             buttons[closureIndex].onClick.AddListener(() =>
             {
                 var view = Views.instance.OpenView<RemindView>();
-                view.ShowImageRemindView_Pet(data[closureIndex].info, data[closureIndex].image);
+                view.ShowImageRemindView_Pet(petsItems[closureIndex].info, petsItems[closureIndex].image);
 
                 view.leftButton.onClick.AddListener(() =>
                 {
@@ -69,8 +72,9 @@ public class PetClassifyModal : Modal
                 view.rightButton.onClick.AddListener(() =>
                 {
                     view.DestoryView();
-
-                    // TODO: change pet
+                    data.currentPet = petsItems[closureIndex];
+                    Modals.instance.GetModel<MineModal>().LoadPet(data.currentPet);
+                    Modals.instance.GetModel<MainModal>().ChangePet(data.currentPet);
                 });
             });
         }

@@ -24,7 +24,8 @@ public class MainApp : Singleton<MainApp>
     private void Start()
     {
         playerGuide = PlayerPrefs.GetInt("hasPlay");
-        
+        itemData.currentPet = itemData.petsItems[5]; // set default pet
+
         if (playerGuide != 1)
         {
             var modal = Modals.instance.OpenModal<GuideModal>();

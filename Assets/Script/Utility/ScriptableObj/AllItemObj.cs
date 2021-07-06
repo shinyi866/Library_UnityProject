@@ -25,7 +25,7 @@ public class AllItemObj : ScriptableObject
     }
 
     [System.Serializable]
-    public class PetsItem
+    public struct PetsItem
     {
         public string name;
         public Sprite image;
@@ -37,4 +37,5 @@ public class AllItemObj : ScriptableObject
     public BookItem[] booksItems;
     public MoodItem[] moodItems;
     public PetsItem[] petsItems;
+    public PetsItem currentPet;
 }
