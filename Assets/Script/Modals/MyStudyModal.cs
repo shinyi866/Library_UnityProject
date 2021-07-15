@@ -20,6 +20,8 @@ public class MyStudyModal : Modal
     private Transform itemTransform;
     [SerializeField]
     private Text persentText;
+    [SerializeField]
+    private Slider slider;
 
     private RectTransform containerRect;
     private Text readText;
@@ -41,25 +43,30 @@ public class MyStudyModal : Modal
         readButton.onClick.AddListener(()=> ReadBooks(true));
         notReadButton.onClick.AddListener(() => ReadBooks(false));
     }
+
     private void ReadBooks(bool isRead)
     {
         var changColor = isRead ? readText : notReadText;
         var notChangColor = !isRead ? readText : notReadText;
         changColor.color = Color.white;
         notChangColor.color = Color.black;
-        /*
-        string getBooksUrl = StringAsset.API.GetBookInfo;
-        StartCoroutine(APIRequest.GetRequest(StringAsset.GetFullAPIUrl(getBooksUrl), UnityWebRequest.kHttpVerbGET, (string rawJson) => {
+
+        string url = StringAsset.GetFullAPIUrl(StringAsset.API.MostView);
+
+        StartCoroutine(APIRequest.GetRequest(url, UnityWebRequest.kHttpVerbGET, (string rawJson) => {
             if (string.IsNullOrEmpty(rawJson))
                 return;
 
             var data = JsonSerialization.FromJson<TypeFlag.BookDatabaseType>(rawJson);
             var bookData = data.ToList();
             var count = bookData.Count;
+            float persent = ((float)count / 30);
 
             CaculateItemContent(count);
 
             persentText.text = string.Format("{0} / 30", count);
+            slider.value = persent;
+            Debug.Log("persent " + persent);
 
             for (int i = 0; i < count; i++)
             {
@@ -71,13 +78,19 @@ public class MyStudyModal : Modal
                 var bookInfo = bookData[closureIndex];
 
                 itemTxt.text = bookInfo.name;
-                //itemImage.sprite = bookInfo.picture; //TODO: pic trun tp sprit
+
+                if (bookInfo.picture != null)
+                {
+                    StartCoroutine(APIRequest.GetTexture(bookInfo.picture, (Sprite texture) => {
+                        itemImage.sprite = texture;
+                    }));
+                }
+
                 itemButton.onClick.AddListener(() => {
-                    Debug.Log("i" + closureIndex);
                     Modals.instance.OpenModal<BookInfoModal>().BookInfoLoad(bookInfo);
                 });
             }
-        }));*/
+        }));
     }
 
     private void CaculateItemContent(int number)

@@ -242,15 +242,8 @@ public class BookInfoModal : Modal
 
     private void CreateButtons(string leftString, string rightString)
     {
-        leftButton = ButtonGenerate.Instance.SetModalButton(leftString, TypeFlag.UIColorType.Green);
-        leftButton.transform.SetParent(buttonTransform);
-        var leftButtonRect = leftButton.GetComponent<RectTransform>();
-        leftButtonRect.localScale = new Vector3(1, 1, 1);
-
-        rightButton = ButtonGenerate.Instance.SetModalButton(rightString, TypeFlag.UIColorType.Orange);
-        rightButton.transform.SetParent(buttonTransform);
-        var rightButtonRect = rightButton.GetComponent<RectTransform>();
-        rightButtonRect.localScale = new Vector3(1, 1, 1);
+        leftButton = ButtonGenerate.Instance.SetModalButton(leftString, TypeFlag.UIColorType.Green, buttonTransform);
+        rightButton = ButtonGenerate.Instance.SetModalButton(rightString, TypeFlag.UIColorType.Orange, buttonTransform);
 
         leftButton.onClick.AddListener(() =>
         {

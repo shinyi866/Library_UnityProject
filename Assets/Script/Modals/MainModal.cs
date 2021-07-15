@@ -74,6 +74,8 @@ public class MainModal : Modal
             if (string.IsNullOrEmpty(rawJson))
                 return;
 
+            Debug.Log("success");
+
             var data = JsonSerialization.FromJson<TypeFlag.BookDatabaseType>(rawJson);
             var bookData = data.ToList();
             var count = bookData.Count;
@@ -94,9 +96,9 @@ public class MainModal : Modal
                     StartCoroutine(APIRequest.GetTexture(bookInfo.picture, (Sprite texture) => {
                         itemImage.sprite = texture;
                     }));
-                }                
+                }
+                
                 list.Add(item);
-                //itemImage.sprite = bookInfo.picture; //TODO: pic trun tp sprit
                 itemButton.onClick.AddListener(() => {
                     Modals.instance.OpenModal<BookInfoModal>().BookInfoLoad(bookInfo);
                 });

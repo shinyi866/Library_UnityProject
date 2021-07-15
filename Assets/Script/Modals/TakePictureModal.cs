@@ -21,11 +21,8 @@ public class TakePictureModal : Modal
 
         pictureObject.SetActive(false);
 
-        var leftButton = ButtonGenerate.Instance.SetModalButton(StringAsset.TakePicture.again, TypeFlag.UIColorType.Green);
-        rightButton = ButtonGenerate.Instance.SetModalButton(StringAsset.TakePicture.upload, TypeFlag.UIColorType.Orange);
-
-        leftButton.transform.SetParent(buttonTransform);
-        rightButton.transform.SetParent(buttonTransform);
+        var leftButton = ButtonGenerate.Instance.SetModalButton(StringAsset.TakePicture.again, TypeFlag.UIColorType.Green, buttonTransform);
+        rightButton = ButtonGenerate.Instance.SetModalButton(StringAsset.TakePicture.upload, TypeFlag.UIColorType.Orange, buttonTransform);
 
         leftButton.onClick.AddListener(() => {
             pictureObject.SetActive(false);

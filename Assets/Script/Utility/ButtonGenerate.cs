@@ -15,20 +15,20 @@ public class ButtonGenerate : Singleton<ButtonGenerate>
     private Text text;
     private Image image;
 
-    public Button SetModalButton(string txt, TypeFlag.UIColorType colorType)
+    public Button SetModalButton(string txt, TypeFlag.UIColorType colorType, Transform _transform)
     {
-        _remindObject = Instantiate(remindObject);
+        _remindObject = Instantiate(remindObject, _transform);
 
         var _remindRect = _remindObject.GetComponent<RectTransform>();
         _remindRect.sizeDelta = new Vector2(280, 100);
 
-        button = _remindObject.GetComponent<Button>();
-        text = _remindObject.transform.GetChild(0).gameObject.GetComponent<Text>();
-        image = _remindObject.GetComponent<Image>();
+        button = _remindObject.transform.GetChild(0).GetComponent<Button>();        
+        image = _remindObject.transform.GetChild(0).GetComponent<Image>();
+        text = _remindObject.transform.GetChild(1).gameObject.GetComponent<Text>();        
 
         text.text = txt;
         image.color = MainApp.Instance.uiColorData.GetUIColor(colorType).color;
-
+        
         return button;
     }
 
@@ -39,9 +39,9 @@ public class ButtonGenerate : Singleton<ButtonGenerate>
         var _remindRect = _remindObject.GetComponent<RectTransform>();
         _remindRect.sizeDelta = new Vector2(220, 75);
 
-        button = _remindObject.GetComponent<Button>();
-        text = _remindObject.transform.GetChild(0).gameObject.GetComponent<Text>();
-        image = _remindObject.GetComponent<Image>();
+        button = _remindObject.transform.GetChild(0).GetComponent<Button>();
+        image = _remindObject.transform.GetChild(0).GetComponent<Image>();
+        text = _remindObject.transform.GetChild(1).gameObject.GetComponent<Text>();        
 
         text.text = txt;
         image.color = MainApp.Instance.uiColorData.GetUIColor(colorType).color;
