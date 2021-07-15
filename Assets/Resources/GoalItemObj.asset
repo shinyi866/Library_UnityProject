@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cee714ec78c414ab7bceddd21b81632e, type: 3}
+  m_Name: GoalItemObj
+  m_EditorClassIdentifier: 
+  guideItem:
+    non: {fileID: 21300000, guid: 6d705ca2b77204419a5df9aa74378b08, type: 3}
+    book: {fileID: 21300000, guid: dd14cc152abe04b1f910c2338856372b, type: 3}
+    angry: {fileID: 21300000, guid: 5545b100f7caf41358d9544033416154, type: 3}
+    scared: {fileID: 21300000, guid: 189694e48cd3f47c1ac0912d5c6c32c4, type: 3}
+    happy: {fileID: 21300000, guid: ef392ec2e9da042098a147be9022f9a2, type: 3}
+    wow: {fileID: 21300000, guid: b979f6b548de0491abc80a07801998bc, type: 3}
+    sad: {fileID: 21300000, guid: 36b03b4d4e6a94dfc89df5ecb2999e63, type: 3}
+    hate: {fileID: 21300000, guid: 36fe482b7894b458fa22c2c4b287f2fe, type: 3}

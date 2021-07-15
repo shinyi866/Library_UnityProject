@@ -24,12 +24,12 @@ public class TypeFlag
     [System.Serializable]
     public class BookDatabaseType
     {
-        public int id;
+        public string book_id;
+        //public List<ClassifyType> classify;
+        public string info;
+        public int mood;
         public string name;
         public string picture;
-        public List<ClassifyType> classify;
-        public int mood;
-        public string info;
     }
 
     [System.Serializable]

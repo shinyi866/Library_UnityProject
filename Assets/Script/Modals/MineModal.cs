@@ -37,6 +37,10 @@ public class MineModal : Modal
         rightButton.onClick.AddListener(() => {
             Modals.instance.OpenModal<MyStudyModal>();
         });
+
+        leftButton.onClick.AddListener(() => {
+            Modals.instance.OpenModal<MyGoalModal>();
+        });
     }
 
     public void LoadPet(AllItemObj.PetsItem data)

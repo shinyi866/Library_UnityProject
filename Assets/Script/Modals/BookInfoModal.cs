@@ -50,7 +50,7 @@ public class BookInfoModal : Modal
         noImageButton = bookConatainerObject.transform.GetChild(0).GetChild(1).GetComponent<Button>();
         moreInfoButton = bookConatainerObject.transform.GetChild(1).GetComponent<Button>();
 
-        backButton.onClick.AddListener(() => { Modals.instance.OpenModal<FindBookResultModal>(); });
+        backButton.onClick.AddListener(() => { Modals.instance.LastModal(); });
 
         AllItemObj = MainApp.Instance.itemData;
     }
@@ -72,7 +72,7 @@ public class BookInfoModal : Modal
             var view = Views.instance.OpenView<MoreInfoView>();
             view.ShowView(bookData.info);
         });
-
+        /*
         var count = bookData.classify.Count;
 
         for (int i = 0; i <= count; i++)
@@ -93,6 +93,7 @@ public class BookInfoModal : Modal
             }
             else
             {
+                
                 var titleString = bookData.classify[i].id;
                 var classifyIndex = bookData.classify[i].name;
                 var itemObj = AllItemObj.booksTitleItems.ToList();
@@ -100,9 +101,10 @@ public class BookInfoModal : Modal
 
                 itemTxt.text = AllItemObj.booksItems[index].name[classifyIndex];
                 itemImage.sprite = AllItemObj.booksItems[index].image[classifyIndex];
+                
             }
         }
-
+        */
         CreateButtons(StringAsset.BookInfo.saveStudy, StringAsset.BookInfo.findBook);
 
 
@@ -114,7 +116,7 @@ public class BookInfoModal : Modal
         barText.text = StringAsset.BookInfo.info;
 
         DestoryView();
-
+        /*
         StartCoroutine(
             APIRequest.GetRequest(StringAsset.GetFullAPIUrl(getBooksUrl), UnityWebRequest.kHttpVerbGET, (string rawJson) => {
 
@@ -165,7 +167,7 @@ public class BookInfoModal : Modal
                 }
             })
         );
-
+        */
         CreateButtons(StringAsset.BookInfo.saveStudy, StringAsset.BookInfo.findBook);
 
         leftButton.onClick.AddListener(() =>

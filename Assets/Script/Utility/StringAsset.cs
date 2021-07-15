@@ -49,6 +49,18 @@
         public const string study = "我的書房";
     }
 
+    public class Goal
+    {
+        public const string books = "總共閱讀的書本數";
+        public const string happy = "令人「快樂」的書";
+        public const string scared = "覺得「可怕」的書";
+        public const string wow = "感到「驚奇」的書";
+        public const string angry = "令人「生氣」的書";
+        public const string hate = "覺得「討厭」的書";
+        public const string sad = "感到「悲傷」的書";
+        public static string[] goalArray = new string[] { books, happy, scared, wow, angry, hate, sad };
+    }
+
     public class TakePicture
     {
         public const string again = "重新拍攝";
@@ -62,16 +74,19 @@
     public class Domain
     {
         public const string LocalHost = "http://localhost:3000/";
+        public const string Host = "https://book2021.azurewebsites.net/books/";
     }
 
    public class API
     {
         public const string GetBookInfo = "books";
         public const string GetClassify = "classify/{0}";
+        public const string Recommend = "recommend";
+        public const string MostView = "most_view";
     }
 
     public static string GetFullAPIUrl(string apiUrl)
     {
-        return Domain.LocalHost + apiUrl;
+        return Domain.Host + apiUrl;
     }
 }
