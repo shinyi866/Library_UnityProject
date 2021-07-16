@@ -62,20 +62,18 @@ public class BookInfoModal : Modal
 
         DestoryView();
 
-        var hasCover = !string.IsNullOrEmpty(bookData.picture);
-
         bookTitle.text = bookData.name;
-        HaveBookCover(hasCover);
+        HaveBookCover(bookData.picture);
 
         moreInfoButton.onClick.AddListener(() =>
         {
             var view = Views.instance.OpenView<MoreInfoView>();
             view.ShowView(bookData.info);
         });
-        /*
+        
         var count = bookData.classify.Count;
 
-        for (int i = 0; i <= count; i++)
+        for (int i = 0; i < count; i++)
         {
             var item = Instantiate(itemObject, classifyObject.transform);
             var itemTxt = item.transform.GetChild(0).GetComponent<Text>();
@@ -93,18 +91,20 @@ public class BookInfoModal : Modal
             }
             else
             {
-                
-                var titleString = bookData.classify[i].id;
-                var classifyIndex = bookData.classify[i].name;
+                var titleInt = bookData.classify[i].id;
+                var classifyString = bookData.classify[i].name;
                 var itemObj = AllItemObj.booksTitleItems.ToList();
-                var index = itemObj.FindIndex(x => x.name == titleString);
+                var index = itemObj.FindIndex(x => x.name == classifyString);
+                Debug.Log("titleInt " + titleInt);
+                Debug.Log("classifyString " + classifyString);
+                Debug.Log("indexg " + index);
+                //TODO: change to little title
+                //itemTxt.text = AllItemObj.booksItems[titleInt].name[index];
+                //itemImage.sprite = AllItemObj.booksItems[titleInt].image[index];
 
-                itemTxt.text = AllItemObj.booksItems[index].name[classifyIndex];
-                itemImage.sprite = AllItemObj.booksItems[index].image[classifyIndex];
-                
             }
         }
-        */
+        
         CreateButtons(StringAsset.BookInfo.saveStudy, StringAsset.BookInfo.findBook);
 
 
@@ -116,7 +116,7 @@ public class BookInfoModal : Modal
         barText.text = StringAsset.BookInfo.info;
 
         DestoryView();
-        /*
+        
         StartCoroutine(
             APIRequest.GetRequest(StringAsset.GetFullAPIUrl(getBooksUrl), UnityWebRequest.kHttpVerbGET, (string rawJson) => {
 
@@ -125,10 +125,9 @@ public class BookInfoModal : Modal
 
                 var data = JsonSerialization.FromJson<TypeFlag.BookDatabaseType>(rawJson);
                 var bookData = data.ToList()[0];
-                var hasCover = !string.IsNullOrEmpty(bookData.picture);
 
                 bookTitle.text = bookData.name;
-                HaveBookCover(hasCover);
+                HaveBookCover(bookData.picture);
 
                 moreInfoButton.onClick.AddListener(() =>
                 {
@@ -159,15 +158,15 @@ public class BookInfoModal : Modal
                         var titleString = bookData.classify[i].id;
                         var classifyIndex = bookData.classify[i].name;
                         var itemObj = AllItemObj.booksTitleItems.ToList();
-                        var index = itemObj.FindIndex(x => x.name == titleString);
+                        //var index = itemObj.FindIndex(x => x.name == titleString);
 
-                        itemTxt.text = AllItemObj.booksItems[index].name[classifyIndex];
-                        itemImage.sprite = AllItemObj.booksItems[index].image[classifyIndex];
+                        //itemTxt.text = AllItemObj.booksItems[index].name[classifyIndex];
+                        //itemImage.sprite = AllItemObj.booksItems[index].image[classifyIndex];
                     }
                 }
             })
         );
-        */
+        
         CreateButtons(StringAsset.BookInfo.saveStudy, StringAsset.BookInfo.findBook);
 
         leftButton.onClick.AddListener(() =>
@@ -273,22 +272,33 @@ public class BookInfoModal : Modal
         });
     }
 
-    private void HaveBookCover(bool isOpen)
+    private void HaveBookCover(string picture)
     {
+        var isOpen = !string.IsNullOrEmpty(picture);
+
         bookCoverImage.gameObject.SetActive(isOpen);
         noImageButton.gameObject.SetActive(!isOpen);
 
-        noImageButton.onClick.AddListener(()=> {
-            var view = Views.instance.OpenView<RemindView>();
-            view.ShowOriginRemindView(StringAsset.TakePicture.takePicture);
+        if (isOpen)
+        {
+            StartCoroutine(APIRequest.GetTexture(picture, (Sprite texture) => {
+                bookCoverImage.sprite = texture;
+            }));
+        }
+        else
+        {            
+            noImageButton.onClick.AddListener(() => {
+                var view = Views.instance.OpenView<RemindView>();
+                view.ShowOriginRemindView(StringAsset.TakePicture.takePicture);
 
-            view.button.onClick.AddListener(() => {
-                view.DestoryView();
-                Modals.instance.OpenModal<TakePictureModal>();
-                //TODO: close bar
-                //TODO: open camera
+                view.button.onClick.AddListener(() => {
+                    view.DestoryView();
+                    Modals.instance.OpenModal<TakePictureModal>();
+                    //TODO: close bar
+                    //TODO: open camera
+                });
             });
-        });
+        }
     }
 
     private void DestoryView()

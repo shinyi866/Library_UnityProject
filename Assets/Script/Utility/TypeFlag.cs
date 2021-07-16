@@ -25,7 +25,7 @@ public class TypeFlag
     public class BookDatabaseType
     {
         public string book_id;
-        //public List<ClassifyType> classify;
+        public List<ClassifyType> classify;
         public string info;
         public int mood;
         public string name;
@@ -35,7 +35,7 @@ public class TypeFlag
     [System.Serializable]
     public class ClassifyType
     {
-        public string id;
-        public int name;
+        public int id;
+        public string name;
     }
 }

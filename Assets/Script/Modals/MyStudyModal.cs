@@ -66,7 +66,6 @@ public class MyStudyModal : Modal
 
             persentText.text = string.Format("{0} / 30", count);
             slider.value = persent;
-            Debug.Log("persent " + persent);
 
             for (int i = 0; i < count; i++)
             {

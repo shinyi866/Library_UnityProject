@@ -83,10 +83,17 @@
         public const string GetClassify = "classify/{0}";
         public const string Recommend = "recommend";
         public const string MostView = "most_view";
+        public const string Search = "search";
     }
 
     public static string GetFullAPIUrl(string apiUrl)
     {
         return Domain.Host + apiUrl;
+    }
+
+    public static string GetSearchAPIUrl(string searchTxt)
+    {
+        string searchUrl = string.Format("{0}?q={1}", API.Search, searchTxt);
+        return Domain.Host + searchUrl;
     }
 }

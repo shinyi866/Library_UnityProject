@@ -16,6 +16,10 @@ public class FindBookModal : Modal
     private Transform bookItem;
     [SerializeField]
     private Transform moodItem;
+    [SerializeField]
+    private Button searchButton;
+    [SerializeField]
+    private Text searchText;
 
     private AllItemObj.BookTitleItem[] titleItems;
     private AllItemObj.MoodItem[] moodData;
@@ -25,6 +29,20 @@ public class FindBookModal : Modal
     private void Start()
     {
         CreateItem();
+
+        searchButton.onClick.AddListener(() => {
+            Search();
+        });
+    }
+
+    private void Search()
+    {
+        var txt = searchText.text;
+        searchText.text = "";
+        
+        string getBooksUrl = StringAsset.GetSearchAPIUrl(txt);
+        var modal = Modals.instance.OpenModal<FindBookResultModal>();
+        modal.FindBooks(getBooksUrl);
     }
 
     private void CreateItem()
