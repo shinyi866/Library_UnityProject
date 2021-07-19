@@ -30,6 +30,7 @@ public class AllItemObj : ScriptableObject
         public string name;
         public Sprite image;
         public string info;
+        public Sprite bgImage;
     }
 
     [SerializeField]

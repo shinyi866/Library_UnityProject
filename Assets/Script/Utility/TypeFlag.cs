@@ -25,17 +25,29 @@ public class TypeFlag
     public class BookDatabaseType
     {
         public string book_id;
-        public List<ClassifyType> classify;
+        public List<string> classify;
         public string info;
         public int mood;
         public string name;
         public string picture;
+
+        public Classify GetClassify(string _classifyString)
+        {
+            Classify _classify = new Classify();
+
+            string[] splitArray = _classifyString.Split(char.Parse("-"));
+            _classify.major = int.Parse(splitArray[0]);
+            _classify.minor = int.Parse(splitArray[1]);
+
+
+            return _classify;
+        }
     }
 
     [System.Serializable]
-    public class ClassifyType
+    public class Classify
     {
-        public int id;
-        public string name;
+        public int major;
+        public int minor;
     }
 }

@@ -29,8 +29,7 @@ public class RemindView : Modal
         _viewObject.transform.GetChild(0).gameObject.SetActive(false);
 
         text.text = txt;
-        button = ButtonGenerate.Instance.SetViewButton(StringAsset.RemindButton.success, TypeFlag.UIColorType.Orange);
-        button.transform.SetParent(contentTransform);
+        button = ButtonGenerate.Instance.SetViewButton(StringAsset.RemindButton.success, TypeFlag.UIColorType.Orange, contentTransform);
     }
 
 
@@ -42,7 +41,7 @@ public class RemindView : Modal
         _viewObject.transform.GetChild(0).gameObject.SetActive(false);
 
         text.text = txt;
-        CreateButtons(StringAsset.RemindButton.goToStudy, StringAsset.RemindButton.back);
+        CreateButtons(StringAsset.RemindButton.goToStudy, StringAsset.RemindButton.back, contentTransform);
     }
 
     public void ShowImageRemindView_Pet(string _txt, Sprite _sprite)
@@ -60,7 +59,7 @@ public class RemindView : Modal
         image.sprite = _sprite;
         text.text = _txt;
 
-        CreateButtons(StringAsset.RemindButton.back, StringAsset.RemindButton.confirm);
+        CreateButtons(StringAsset.RemindButton.back, StringAsset.RemindButton.confirm, contentTransform);
     }
 
     public void ShowImageRemindView(string _txt, Sprite _sprite)
@@ -71,7 +70,7 @@ public class RemindView : Modal
         image.sprite = _sprite;
         text.text = _txt;
 
-        CreateButtons(StringAsset.RemindButton.back, StringAsset.RemindButton.confirm);
+        CreateButtons(StringAsset.RemindButton.back, StringAsset.RemindButton.confirm, contentTransform);
     }
 
     private void CreateView()
@@ -84,12 +83,11 @@ public class RemindView : Modal
         contentTransform = _viewObject.transform.GetChild(2);
     }
 
-    private void CreateButtons(string leftString, string rightString)
+    private void CreateButtons(string leftString, string rightString, Transform _transform)
     {
         if(leftButton == null)
         {
-            leftButton = ButtonGenerate.Instance.SetViewButton(leftString, TypeFlag.UIColorType.Green);
-            leftButton.transform.SetParent(contentTransform);
+            leftButton = ButtonGenerate.Instance.SetViewButton(leftString, TypeFlag.UIColorType.Green, _transform);
 
             var _viewRect = leftButton.GetComponent<RectTransform>();
             _viewRect.localScale = new Vector3(1, 1, 1);
@@ -97,8 +95,7 @@ public class RemindView : Modal
 
         if (rightButton == null)
         {
-            rightButton = ButtonGenerate.Instance.SetViewButton(rightString, TypeFlag.UIColorType.Orange);
-            rightButton.transform.SetParent(contentTransform);
+            rightButton = ButtonGenerate.Instance.SetViewButton(rightString, TypeFlag.UIColorType.Orange, _transform);
 
             var _viewRect = rightButton.GetComponent<RectTransform>();
             _viewRect.localScale = new Vector3(1, 1, 1);

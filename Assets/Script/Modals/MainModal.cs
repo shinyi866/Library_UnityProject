@@ -100,7 +100,7 @@ public class MainModal : Modal
                 
                 list.Add(item);
                 itemButton.onClick.AddListener(() => {
-                    Modals.instance.OpenModal<BookInfoModal>().BookInfoLoad(bookInfo);
+                    Modals.instance.OpenModal<BookInfoModal>().ShowBookInfo(bookInfo);
                 });
             }
         }));

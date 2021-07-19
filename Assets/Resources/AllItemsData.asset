@@ -222,23 +222,35 @@ MonoBehaviour:
     image: {fileID: 21300000, guid: 7e16446d9f1d5491c8dea61a753a315c, type: 3}
     info: "\u9AD8\u9AD8\u559C\u6B61\u5148\u5DE6\u53F3\u770B\u770B\u5F8C\uFF0C\u518D\u51FA\u767C\u53BB\u627E\u4ED6\u60F3\u770B\u7684\u66F8\u3002
       \u4F60\u60F3\u9078\u64C7\u9AD8\u9AD8\u55CE\uFF1F"
+    bgImage: {fileID: 21300000, guid: f41294216f13e4bccbebe25450cb0eb1, type: 3}
   - name: "\u5192\u5192 (Mao)"
     image: {fileID: 21300000, guid: f9547dc3de45342f3a7ed7e3464a144b, type: 3}
     info: "\u5192\u5192\u559C\u6B61\u81EA\u5DF1\u884C\u52D5\uFF0C\u6703\u4E00\u500B\u4EBA\u53BB\u627E\u6709\u8208\u8DA3\u7684\u66F8\u4F86\u770B\u3002
       \u4F60\u60F3\u9078\u64C7\u5192\u5192\u55CE\uFF1F"
+    bgImage: {fileID: 21300000, guid: 096df83b15f3d4e849a21590715100b2, type: 3}
   - name: "\u975C\u975C (Jin)"
     image: {fileID: 21300000, guid: 908e4d371a43946a6b9c5f876ea0c2ef, type: 3}
     info: "\u975C\u975C\u4E00\u627E\u5230\u559C\u6B61\u7684\u5730\u65B9\uFF0C\u5C31\u80FD\u5750\u5728\u90A3\u908A\u770B\u5F88\u4E45\u7684\u66F8\u3002
       \u4F60\u60F3\u9078\u64C7\u975C\u975C\u55CE\uFF1F"
+    bgImage: {fileID: 21300000, guid: 988b43aac439243269568b43008bcbb1, type: 3}
   - name: "\u60A0\u60A0 (Yoyo)"
     image: {fileID: 21300000, guid: ab3c32302a5e64aa9ab44c4ed7da78a8, type: 3}
     info: "\u60A0\u60A0\u96D6\u7136\u61F6\u6D0B\u6D0B\u7684\uFF0C\u4F46\u662F\u4ED6\u7E3D\u662F\u80FD\u627E\u5230\u60F3\u770B\u7684\u66F8\u3002
       \u4F60\u60F3\u9078\u64C7\u60A0\u60A0\u55CE\uFF1F"
+    bgImage: {fileID: 21300000, guid: fd1afce9af096472f910ff0f173f005e, type: 3}
   - name: "\u8E66\u8E66 (Beng)"
     image: {fileID: 21300000, guid: 04ce5eacbef94440eb47fcc14f53a2e6, type: 3}
     info: "\u8E66\u8E66\u6700\u611B\u5230\u8655\u901B\u901B\uFF0C\u5404\u5F0F\u5404\u6A23\u7684\u66F8\u4ED6\u90FD\u6703\u770B\u3002
       \u4F60\u60F3\u9078\u64C7\u8E66\u8E66\u55CE\uFF1F"
+    bgImage: {fileID: 21300000, guid: 44e993859585c4bfc8376fc11b7e4399, type: 3}
   - name: "\u5DE7\u5DE7 (Ciao)"
     image: {fileID: 21300000, guid: d78d73506a0324705acd1de9e6671fd1, type: 3}
     info: "\u5DE7\u5DE7\u4E0D\u559C\u6B61\u81EA\u5DF1\u4E00\u500B\u4EBA\uFF0C\u4ED6\u559C\u6B61\u6709\u4EBA\u966A\u4ED6\u4E00\u8D77\u770B\u66F8\u3002
       \u4F60\u60F3\u9078\u64C7\u5DE7\u5DE7\u55CE\uFF1F"
+    bgImage: {fileID: 21300000, guid: 1834369db7f824f209b045ffa39d2903, type: 3}
+  currentPet:
+    name: "\u60A0\u60A0 (Yoyo)"
+    image: {fileID: 21300000, guid: ab3c32302a5e64aa9ab44c4ed7da78a8, type: 3}
+    info: "\u60A0\u60A0\u96D6\u7136\u61F6\u6D0B\u6D0B\u7684\uFF0C\u4F46\u662F\u4ED6\u7E3D\u662F\u80FD\u627E\u5230\u60F3\u770B\u7684\u66F8\u3002
+      \u4F60\u60F3\u9078\u64C7\u60A0\u60A0\u55CE\uFF1F"
+    bgImage: {fileID: 21300000, guid: fd1afce9af096472f910ff0f173f005e, type: 3}

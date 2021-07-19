@@ -16,8 +16,7 @@ public class LongView : Modal
     private Transform transformSelf;
     private Text text;
     private Button closeButton;
-    private AllItemObj.MoodItem[] moodData;
-    private AllItemObj.BookItem classifyData;
+    private AllItemObj AllItemObj;
     private List<string> nameList = new List<string>();
     private List<Button> moodButtons = new List<Button>();
     private List<Button> bookButtons = new List<Button>();
@@ -25,6 +24,7 @@ public class LongView : Modal
     private void Awake()
     {
         transformSelf = this.transform;
+        AllItemObj = MainApp.Instance.itemData;
     }
 
     public void ShowMoodView()
@@ -33,31 +33,39 @@ public class LongView : Modal
         CreateMoodItem();
     }
 
-    public void ShowClassifyView()
+    public void ShowClassifyView(TypeFlag.BookDatabaseType bookData)
     {
-        // TODO: get book classify API
         CreateView(StringAsset.BookRemind.classifyView);
-        CreateClassifyItem();
+        CreateClassifyItem(bookData);
     }
 
-    private void CreateClassifyItem()
+    private void CreateClassifyItem(TypeFlag.BookDatabaseType bookData)
     {
-        classifyData = MainApp.Instance.itemData.booksItems[10]; //TODO: API book classifyData
-        var bookLength = classifyData.image.Length;
+        var count = bookData.classify.Count;
 
-        for (int i = 0; i < bookLength; i++)
+        for (int i = 0; i < count; i++)
         {
             var itemObj = Instantiate(item, contentTransform);
             var button = itemObj.gameObject.GetComponent<Button>();
             var image = itemObj.gameObject.GetComponent<Image>();
             var txt = itemObj.gameObject.GetComponentInChildren<Text>();
 
-            image.sprite = classifyData.image[i];
-            txt.text = classifyData.name[i];
-            bookButtons.Add(button);
+            var classifyString = bookData.classify[i];
+            var classify = bookData.GetClassify(classifyString);
+
+            try
+            {
+                txt.text = AllItemObj.booksItems[classify.major].name[classify.minor];
+                image.sprite = AllItemObj.booksItems[classify.major].image[classify.minor];
+                bookButtons.Add(button);
+            }
+            catch
+            {
+                Debug.Log("Can not find minor or major");
+            }
         }
 
-        if (bookLength < 5)
+        if (count < 5)
             CreateAddButton();
 
         BookButtonClick();
@@ -65,7 +73,7 @@ public class LongView : Modal
 
     private void CreateMoodItem()
     {
-        moodData = MainApp.Instance.itemData.moodItems;
+        var moodData = AllItemObj.moodItems;
         var moodLength = moodData.Length;
 
         for (int i = 0; i < moodLength; i++)
@@ -119,7 +127,7 @@ public class LongView : Modal
                     view.DestoryView();
 
                     var modal = Modals.instance.OpenModal<BookInfoModal>();
-                    modal.ReadBook();
+                    modal.ChangeReadStatus(true);
                 });
 
                 // TODO: sent suggest
@@ -146,7 +154,7 @@ public class LongView : Modal
                     view.DestoryView();
 
                     var modal = Modals.instance.OpenModal<BookInfoModal>();
-                    modal.ReadBook();
+                    modal.ChangeReadStatus(true);
                 });
 
                 // TODO: add mood 50 power

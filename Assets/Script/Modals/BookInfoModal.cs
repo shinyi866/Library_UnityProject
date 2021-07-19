@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine.Networking;
 using UnityEngine;
 using UnityEngine.UI;
@@ -16,7 +17,6 @@ public class BookInfoModal : Modal
     private GameObject topBarObject;
     private GameObject bookConatainerObject;
     private GameObject classifyObject;
-    private GameObject buttonsObject;
 
     private Text barText;
     private Text bookTitle;
@@ -33,6 +33,9 @@ public class BookInfoModal : Modal
 
     private Transform buttonTransform;
     private AllItemObj AllItemObj;
+    private List<GameObject> buttons = new List<GameObject>();
+    private List<GameObject> items = new List<GameObject>();
+    private TypeFlag.BookDatabaseType currentBookData;
 
     //private TypeFlag.BookDatabaseType bookData;
 
@@ -50,27 +53,87 @@ public class BookInfoModal : Modal
         noImageButton = bookConatainerObject.transform.GetChild(0).GetChild(1).GetComponent<Button>();
         moreInfoButton = bookConatainerObject.transform.GetChild(1).GetComponent<Button>();
 
-        backButton.onClick.AddListener(() => { Modals.instance.LastModal(); });
+        backButton.onClick.AddListener(() =>
+        {
+            Modals.instance.LastModal();
+            CleanAllSetting();
+        });
 
         AllItemObj = MainApp.Instance.itemData;
     }
 
-    public void BookInfoLoad(TypeFlag.BookDatabaseType bookData)
+    public void ShowBookInfo(TypeFlag.BookDatabaseType bookData)
     {
-        
+        CleanElementSetting();
         barText.text = StringAsset.BookInfo.info;
 
-        DestoryView();
+        LoadBookInfo(bookData);
 
+        CreateButtons(StringAsset.BookInfo.saveStudy, StringAsset.BookInfo.findBook);
+
+        leftButton.onClick.AddListener(() =>
+        {
+            var view = Views.instance.OpenView<RemindView>();
+            view.ShowChooseRemindView(StringAsset.BookRemind.successToStudy);
+
+            remindLeftButton = view.leftButton;
+            remindLeftButton.onClick.AddListener(() =>
+            {
+                Modals.instance.OpenModal<MyStudyModal>();
+                view.DestoryView();
+            });
+
+            remindRightButton = view.rightButton;
+            remindRightButton.onClick.AddListener(() =>
+            {
+                view.DestoryView();
+                // TODO: check read or not
+                var _read = false; // online
+
+                ChangeReadStatus(_read);
+            });
+        });
+
+        GoARViewButtonClick();
+    }
+
+    public void ChangeReadStatus(bool isRead)
+    {
+        CleanElementSetting();
+
+        var txt = isRead ? StringAsset.BookInfo.read : StringAsset.BookInfo.notRead;
+        var leftButtonTxt = isRead ? StringAsset.BookInfo.change : StringAsset.BookInfo.finish;
+        
+        barText.text = txt;
+        CreateButtons(leftButtonTxt, StringAsset.BookInfo.findBook);
+
+        leftButton.onClick.AddListener(() =>
+        {
+            var view = Views.instance.OpenView<LongView>();
+
+            if(isRead)
+                view.ShowClassifyView(currentBookData);
+            else
+                view.ShowMoodView();
+        });
+
+        GoARViewButtonClick();
+    }
+
+    public void LoadBookAndChangeStatus(bool isRead, TypeFlag.BookDatabaseType bookData)
+    {
+        LoadBookInfo(bookData);
+        ChangeReadStatus(isRead);
+    }
+
+    private void LoadBookInfo(TypeFlag.BookDatabaseType bookData)
+    {
+        currentBookData = bookData;
         bookTitle.text = bookData.name;
         HaveBookCover(bookData.picture);
 
-        moreInfoButton.onClick.AddListener(() =>
-        {
-            var view = Views.instance.OpenView<MoreInfoView>();
-            view.ShowView(bookData.info);
-        });
-        
+        MoreInfoButtonClick(bookData.info);
+
         var count = bookData.classify.Count;
 
         for (int i = 0; i < count; i++)
@@ -81,6 +144,7 @@ public class BookInfoModal : Modal
 
             item.GetComponent<Button>().enabled = false;
             itemTxt.color = Color.white;
+            items.Add(item);
 
             if (i == count)
             {
@@ -91,152 +155,20 @@ public class BookInfoModal : Modal
             }
             else
             {
-                var titleInt = bookData.classify[i].id;
-                var classifyString = bookData.classify[i].name;
-                var itemObj = AllItemObj.booksTitleItems.ToList();
-                var index = itemObj.FindIndex(x => x.name == classifyString);
-                Debug.Log("titleInt " + titleInt);
-                Debug.Log("classifyString " + classifyString);
-                Debug.Log("indexg " + index);
-                //TODO: change to little title
-                //itemTxt.text = AllItemObj.booksItems[titleInt].name[index];
-                //itemImage.sprite = AllItemObj.booksItems[titleInt].image[index];
+                var classifyString = bookData.classify[i];
+                var classify = bookData.GetClassify(classifyString);
 
+                try
+                {
+                    itemTxt.text = AllItemObj.booksItems[classify.major].name[classify.minor];
+                    itemImage.sprite = AllItemObj.booksItems[classify.major].image[classify.minor];
+                }
+                catch
+                {
+                    Debug.Log("Can not find minor or major");
+                }
             }
         }
-        
-        CreateButtons(StringAsset.BookInfo.saveStudy, StringAsset.BookInfo.findBook);
-
-
-    }
-
-    public void BookInfo()
-    {
-        string getBooksUrl = StringAsset.API.GetBookInfo;
-        barText.text = StringAsset.BookInfo.info;
-
-        DestoryView();
-        
-        StartCoroutine(
-            APIRequest.GetRequest(StringAsset.GetFullAPIUrl(getBooksUrl), UnityWebRequest.kHttpVerbGET, (string rawJson) => {
-
-                if (string.IsNullOrEmpty(rawJson))
-                    return;
-
-                var data = JsonSerialization.FromJson<TypeFlag.BookDatabaseType>(rawJson);
-                var bookData = data.ToList()[0];
-
-                bookTitle.text = bookData.name;
-                HaveBookCover(bookData.picture);
-
-                moreInfoButton.onClick.AddListener(() =>
-                {
-                    var view = Views.instance.OpenView<MoreInfoView>();
-                    view.ShowView(bookData.info);
-                });
-
-                var count = bookData.classify.Count;
-
-                for(int i = 0; i <= count; i++)
-                {
-                    var item = Instantiate(itemObject, classifyObject.transform);
-                    var itemTxt = item.transform.GetChild(0).GetComponent<Text>();
-                    var itemImage = item.GetComponent<Image>();
-
-                    item.GetComponent<Button>().enabled = false;
-                    itemTxt.color = Color.white;
-
-                    if (i == count)
-                    {
-                        var moodObj = AllItemObj.moodItems[bookData.mood];
-
-                        itemImage.sprite = moodObj.image;
-                        itemTxt.text = moodObj.name;
-                    }
-                    else
-                    {
-                        var titleString = bookData.classify[i].id;
-                        var classifyIndex = bookData.classify[i].name;
-                        var itemObj = AllItemObj.booksTitleItems.ToList();
-                        //var index = itemObj.FindIndex(x => x.name == titleString);
-
-                        //itemTxt.text = AllItemObj.booksItems[index].name[classifyIndex];
-                        //itemImage.sprite = AllItemObj.booksItems[index].image[classifyIndex];
-                    }
-                }
-            })
-        );
-        
-        CreateButtons(StringAsset.BookInfo.saveStudy, StringAsset.BookInfo.findBook);
-
-        leftButton.onClick.AddListener(() =>
-        {
-            var view = Views.instance.OpenView<RemindView>();
-            view.ShowChooseRemindView(StringAsset.BookRemind.successToStudy);
-
-            remindLeftButton = view.leftButton;
-            remindLeftButton.onClick.AddListener(() =>
-            {
-                Modals.instance.OpenModal<MyStudyModal>();
-                view.DestoryView();
-            });
-
-            remindRightButton = view.rightButton;
-            remindRightButton.onClick.AddListener(() =>
-            {                
-                view.DestoryView();
-                NotReadBook();
-            });
-        });
-
-        rightButton.onClick.AddListener(() =>
-        {
-            var modal = Modals.instance.OpenModal<GuideModal>();
-            modal.ShowView(TypeFlag.GuideType.ARfindBook);
-            // AR ibeacon
-        });
-    }
-
-    public void NotReadBook()
-    {
-        barText.text = StringAsset.BookInfo.notRead;
-
-        DestoryView();
-        CreateButtons(StringAsset.BookInfo.finish, StringAsset.BookInfo.findBook);
-
-        leftButton.onClick.AddListener(() =>
-        {
-            var view = Views.instance.OpenView<LongView>();
-            view.ShowMoodView();
-        });
-
-        rightButton.onClick.AddListener(() =>
-        {
-            var modal = Modals.instance.OpenModal<GuideModal>();
-            modal.ShowView(TypeFlag.GuideType.ARfindBook);
-            // AR ibeacon
-        });
-    }
-
-    public void ReadBook()
-    {
-        barText.text = StringAsset.BookInfo.read;
-
-        DestoryView();
-        CreateButtons(StringAsset.BookInfo.change, StringAsset.BookInfo.findBook);
-
-        leftButton.onClick.AddListener(() =>
-        {
-            var view = Views.instance.OpenView<LongView>();
-            view.ShowClassifyView();
-        });
-
-        rightButton.onClick.AddListener(() =>
-        {
-            var modal = Modals.instance.OpenModal<GuideModal>();
-            modal.ShowView(TypeFlag.GuideType.ARfindBook);
-            // AR ibeacon
-        });
     }
 
     private void CreateButtons(string leftString, string rightString)
@@ -244,32 +176,8 @@ public class BookInfoModal : Modal
         leftButton = ButtonGenerate.Instance.SetModalButton(leftString, TypeFlag.UIColorType.Green, buttonTransform);
         rightButton = ButtonGenerate.Instance.SetModalButton(rightString, TypeFlag.UIColorType.Orange, buttonTransform);
 
-        leftButton.onClick.AddListener(() =>
-        {
-            var view = Views.instance.OpenView<RemindView>();
-            view.ShowChooseRemindView(StringAsset.BookRemind.successToStudy);
-
-            remindLeftButton = view.leftButton;
-            remindLeftButton.onClick.AddListener(() =>
-            {
-                Modals.instance.OpenModal<MyStudyModal>();
-                view.DestoryView();
-            });
-
-            remindRightButton = view.rightButton;
-            remindRightButton.onClick.AddListener(() =>
-            {
-                view.DestoryView();
-                NotReadBook();
-            });
-        });
-
-        rightButton.onClick.AddListener(() =>
-        {
-            var modal = Modals.instance.OpenModal<GuideModal>();
-            modal.ShowView(TypeFlag.GuideType.ARfindBook);
-            // AR ibeacon
-        });
+        buttons.Add(leftButton.transform.parent.gameObject);
+        buttons.Add(rightButton.transform.parent.gameObject);
     }
 
     private void HaveBookCover(string picture)
@@ -301,12 +209,56 @@ public class BookInfoModal : Modal
         }
     }
 
-    private void DestoryView()
+    private void MoreInfoButtonClick(string _info)
     {
-        if(leftButton != null)
-            Destroy(leftButton.gameObject);
+        moreInfoButton.onClick.AddListener(() =>
+        {
+            var view = Views.instance.OpenView<MoreInfoView>();
+            view.ShowView(_info);
+        });
+    }
 
-        if (rightButton != null)
-            Destroy(rightButton.gameObject);
+    private void GoARViewButtonClick()
+    {
+        rightButton.onClick.AddListener(() =>
+        {
+            var modal = Modals.instance.OpenModal<GuideModal>();
+            modal.ShowView(TypeFlag.GuideType.ARfindBook);
+            // AR ibeacon
+        });
+    }
+
+    // Use is same page
+    private void CleanElementSetting()
+    {
+        if (buttons.Count != 0)
+        {
+            foreach (var b in buttons) { Destroy(b); }
+            buttons.Clear();
+        }
+
+        if (leftButton != null) { leftButton.onClick.RemoveAllListeners(); }
+        if (rightButton != null) { rightButton.onClick.RemoveAllListeners(); }
+    }
+
+    // Use back button
+    private void CleanAllSetting()
+    {
+        if(buttons.Count != 0)
+        {
+            foreach (var b in buttons) { Destroy(b); }
+            buttons.Clear();
+        }
+
+        if(items.Count != 0)
+        {
+            foreach (var i in items) { Destroy(i); }
+            items.Clear();
+        }
+
+        if(leftButton != null) { leftButton.onClick.RemoveAllListeners(); }
+        if (rightButton != null) { rightButton.onClick.RemoveAllListeners(); }
+
+        moreInfoButton.onClick.RemoveAllListeners();
     }
 }

@@ -32,9 +32,9 @@ public class ButtonGenerate : Singleton<ButtonGenerate>
         return button;
     }
 
-    public Button SetViewButton(string txt, TypeFlag.UIColorType colorType)
+    public Button SetViewButton(string txt, TypeFlag.UIColorType colorType, Transform _transform)
     {
-        _remindObject = Instantiate(remindObject);
+        _remindObject = Instantiate(remindObject, _transform);
 
         var _remindRect = _remindObject.GetComponent<RectTransform>();
         _remindRect.sizeDelta = new Vector2(220, 75);

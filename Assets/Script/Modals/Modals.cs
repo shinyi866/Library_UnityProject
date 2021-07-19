@@ -77,7 +77,15 @@ namespace View
         {
             CloseAllModal();
 
-            lastModal.Show(true);
+            if (lastModal == null)
+            {
+                lastModal = OpenModal<MainModal>();
+            }
+            else
+            {
+                lastModal.Show(true);
+            }
+            
 
             var current = currentModal;
             currentModal = lastModal;

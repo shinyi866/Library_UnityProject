@@ -51,7 +51,7 @@ public class MyStudyModal : Modal
         changColor.color = Color.white;
         notChangColor.color = Color.black;
 
-        string url = StringAsset.GetFullAPIUrl(StringAsset.API.MostView);
+        string url = isRead? StringAsset.GetFullAPIUrl(StringAsset.API.MostView) : StringAsset.GetFullAPIUrl(StringAsset.API.Recommend);
 
         StartCoroutine(APIRequest.GetRequest(url, UnityWebRequest.kHttpVerbGET, (string rawJson) => {
             if (string.IsNullOrEmpty(rawJson))
@@ -86,7 +86,7 @@ public class MyStudyModal : Modal
                 }
 
                 itemButton.onClick.AddListener(() => {
-                    Modals.instance.OpenModal<BookInfoModal>().BookInfoLoad(bookInfo);
+                    Modals.instance.OpenModal<BookInfoModal>().LoadBookAndChangeStatus(isRead, bookInfo);
                 });
             }
         }));

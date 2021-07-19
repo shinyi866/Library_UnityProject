@@ -34,7 +34,7 @@ public class FindBookResultModal : Modal
         {
             var modal = Modals.instance.OpenModal<BookInfoModal>();
             // TODO: read ro not?
-            modal.BookInfo();
+            //modal.BookInfo();
         });
     }
 
@@ -47,7 +47,7 @@ public class FindBookResultModal : Modal
         {
             var modal = Modals.instance.OpenModal<BookInfoModal>();
             // TODO: read ro not?
-            modal.BookInfo();
+            //modal.BookInfo();
         });
     }
 
@@ -78,7 +78,7 @@ public class FindBookResultModal : Modal
 
                 list.Add(item);
                 itemButton.onClick.AddListener(() => {
-                    Modals.instance.OpenModal<BookInfoModal>().BookInfoLoad(bookInfo);
+                    Modals.instance.OpenModal<BookInfoModal>().ShowBookInfo(bookInfo);
                 });
             }
         }));
