@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using View;
 
-public class MoreInfoView : Modal
+public class MoreInfoView : BoxView
 {
     [SerializeField]
     private GameObject viewObject;

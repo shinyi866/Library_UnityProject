@@ -1,14 +1,11 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
 
 namespace View
 {
-    public class Modal : MonoBehaviour
+    public class BoxView : MonoBehaviour
     {
         [SerializeField]
         protected CanvasGroup canvasGroup;
-        [SerializeField]
-        protected Image bgImage;
 
         public virtual void Show(bool isShow)
         {
@@ -18,9 +15,6 @@ namespace View
                 canvasGroup.interactable = isShow;
                 canvasGroup.blocksRaycasts = isShow;
             }
-
-            if(bgImage != null)
-                bgImage.sprite = MainApp.Instance.itemData.currentPet.bgImage;
         }
     }
 }

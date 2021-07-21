@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using View;
 using System.Linq;
+using DanielLochner.Assets.SimpleScrollSnap;
 
 public class MainModal : Modal
 {
@@ -20,10 +21,14 @@ public class MainModal : Modal
     private GameObject itemObject;
     [SerializeField]
     private Transform contentTransform;
+    [SerializeField]
+    private SimpleScrollSnap scrollSnap;
 
     private Button upButton;
     private Button downButton;
+    private AllItemObj allItem;
     private List<GameObject> list = new List<GameObject>();
+    //private List<float> centerPosX = new List<float>();
 
     private void Awake()
     {
@@ -31,12 +36,14 @@ public class MainModal : Modal
         downButton = downObject.GetComponent<Button>();
 
         upButton.onClick.AddListener(RecommendBooks);
-        downButton.onClick.AddListener(TopBooks);        
+        downButton.onClick.AddListener(TopBooks);
+
+        allItem = MainApp.Instance.itemData;
     }
 
     private void Start()
     {
-        ChangePet(MainApp.Instance.itemData.currentPet);
+        ChangePet(allItem.currentPet);
         //RecommendBooks();
         TopBooks();
     }
@@ -46,7 +53,6 @@ public class MainModal : Modal
         image.sprite = data.image;
     }
 
-    // TODO: click upButton to Recommed Book API
     private void RecommendBooks()
     {
         SwitchToUpButtons(false);
@@ -56,7 +62,6 @@ public class MainModal : Modal
         FindBooks(getBooksUrl);
     }
 
-    // TODO:click downButton to Top Book API
     private void TopBooks()
     {
         SwitchToUpButtons(true);
@@ -79,31 +84,54 @@ public class MainModal : Modal
             var data = JsonSerialization.FromJson<TypeFlag.BookDatabaseType>(rawJson);
             var bookData = data.ToList();
             var count = bookData.Count;
-            
-            for (int i = 0; i < count; i++)
+
+            for (int i = count - 1; i >= count / 2; i--)
             {
-                var item = Instantiate(itemObject, contentTransform);
-                var itemImage = item.transform.GetChild(0).GetComponent<Image>();
-                var itemTxt = item.transform.GetChild(1).GetComponent<Text>();
-                var itemButton = item.transform.GetChild(2).GetComponent<Button>();
-                var closureIndex = i;
-                var bookInfo = bookData[closureIndex];
-
-                itemTxt.text = bookInfo.name;
-
-                if(bookInfo.picture != null)
-                {
-                    StartCoroutine(APIRequest.GetTexture(bookInfo.picture, (Sprite texture) => {
-                        itemImage.sprite = texture;
-                    }));
-                }
-                
-                list.Add(item);
-                itemButton.onClick.AddListener(() => {
-                    Modals.instance.OpenModal<BookInfoModal>().ShowBookInfo(bookInfo);
-                });
+                var item = scrollSnap.AddToFront(itemObject);
+                CreateItem(item, i, bookData);
             }
+
+            for (int i = 0; i < count / 2; i++)
+            {
+                var item = scrollSnap.AddToBack(itemObject);
+                CreateItem(item, i, bookData);
+            }
+
+            scrollSnap.startingPanel = count / 2;
+            scrollSnap.enabled = true;
+
         }));
+    }
+
+    private void CreateItem(GameObject item, int i, List<TypeFlag.BookDatabaseType> bookData)
+    {
+        //var item = Instantiate(itemObject, contentTransform);
+        var itemImage = item.transform.GetChild(0).GetComponent<Image>();
+        var itemTxt = item.transform.GetChild(1).GetComponent<Text>();
+        var itemButton = item.GetComponent<Button>(); //item.transform.GetChild(2).GetComponent<Button>();
+        var topImage = item.transform.GetChild(3).GetChild(0).GetComponent<Image>();
+        var moodImage = item.transform.GetChild(3).GetChild(1).GetComponent<Image>();
+        var closureIndex = i;
+        var bookInfo = bookData[closureIndex];
+
+        itemTxt.text = bookInfo.name;
+        topImage.gameObject.SetActive(true);
+        topImage.sprite = allItem.rankItems.topImage[i];
+        moodImage.gameObject.SetActive(true);
+        moodImage.sprite = allItem.moodItems[bookInfo.mood].image;
+
+        if (bookInfo.picture != null)
+        {
+            StartCoroutine(APIRequest.GetTexture(bookInfo.picture, (Sprite texture) => {
+                itemImage.sprite = texture;
+            }));
+        }
+
+        list.Add(item);
+        
+        itemButton.onClick.AddListener(() => {
+            Modals.instance.OpenModal<BookInfoModal>().ShowBookInfo(bookInfo);
+        });
     }
 
     private void CleanList()

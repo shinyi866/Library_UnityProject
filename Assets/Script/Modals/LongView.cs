@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using View;
 
-public class LongView : Modal
+public class LongView : BoxView
 {
     [SerializeField]
     private GameObject viewObject;

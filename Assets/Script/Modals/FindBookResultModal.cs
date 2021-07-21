@@ -12,7 +12,7 @@ public class FindBookResultModal : Modal
     private Text titleText;
 
     [SerializeField]
-    private Button bookButton;
+    private GameObject nullObject;
 
     [SerializeField]
     private Button backButton;
@@ -25,30 +25,20 @@ public class FindBookResultModal : Modal
 
     private List<GameObject> list = new List<GameObject>();
 
-    public void BookResult(int index, string text)
+    public void ClassifyResult(string url)
     {
         backButton.onClick.AddListener(() => { Modals.instance.OpenModal<FindBookClassifyModal>(); });
-        titleText.text = text;
+        //titleText.text = text;
 
-        bookButton.onClick.AddListener(() =>
-        {
-            var modal = Modals.instance.OpenModal<BookInfoModal>();
-            // TODO: read ro not?
-            //modal.BookInfo();
-        });
+        FindBooks(url);
     }
 
-    public void MoodResult(int index, string text)
+    public void MoodAndNameSearchResult(string url)
     {
         backButton.onClick.AddListener(() => { Modals.instance.OpenModal<FindBookModal>(); });
-        titleText.text = text;
+        //titleText.text = text;
 
-        bookButton.onClick.AddListener(() =>
-        {
-            var modal = Modals.instance.OpenModal<BookInfoModal>();
-            // TODO: read ro not?
-            //modal.BookInfo();
-        });
+        FindBooks(url);
     }
 
     public void FindBooks(string url)
@@ -56,34 +46,59 @@ public class FindBookResultModal : Modal
         CleanList();
 
         StartCoroutine(APIRequest.GetRequest(url, UnityWebRequest.kHttpVerbGET, (string rawJson) => {
-            if (string.IsNullOrEmpty(rawJson))
-                return;
 
-            Debug.Log("success");
-
-            var data = JsonSerialization.FromJson<TypeFlag.BookDatabaseType>(rawJson);
-            var bookData = data.ToList();
-            var count = bookData.Count;
-
-            for (int i = 0; i < count; i++)
+            try
             {
-                var item = Instantiate(itemObject, contentTransform);
-                var itemImage = item.transform.GetChild(0).GetComponent<Image>();
-                var itemTxt = item.transform.GetChild(1).GetComponent<Text>();
-                var itemButton = item.transform.GetChild(2).GetComponent<Button>();
-                var closureIndex = i;
-                var bookInfo = bookData[closureIndex];
+                Debug.Log("success url" + url);
 
-                itemTxt.text = bookInfo.name;
+                var data = JsonSerialization.FromJson<TypeFlag.BookDatabaseType>(rawJson);
+                var bookData = data.ToList();
+                var count = bookData.Count;
 
-                list.Add(item);
-                itemButton.onClick.AddListener(() => {
-                    Modals.instance.OpenModal<BookInfoModal>().ShowBookInfo(bookInfo);
-                });
+                for (int i = count / 2; i < count; i++)
+                {
+                    CreateItem(i, bookData);
+                    Debug.Log("1 i " + i);
+                }
+
+                for (int i = 0; i < count / 2; i++)
+                {
+                    CreateItem(i, bookData);
+                    Debug.Log("2 i " + i);
+                }
             }
+            catch
+            {
+                var item = Instantiate(nullObject, contentTransform);
+                list.Add(item);
+            }
+
         }));
     }
 
+    private void CreateItem(int i, List<TypeFlag.BookDatabaseType> bookData)
+    {
+        var item = Instantiate(itemObject, contentTransform);
+        var itemImage = item.transform.GetChild(0).GetComponent<Image>();
+        var itemTxt = item.transform.GetChild(1).GetComponent<Text>();
+        var itemButton = item.transform.GetChild(2).GetComponent<Button>();
+        var closureIndex = i;
+        var bookInfo = bookData[closureIndex];
+
+        itemTxt.text = bookInfo.name;
+
+        if (bookInfo.picture != null)
+        {
+            StartCoroutine(APIRequest.GetTexture(bookInfo.picture, (Sprite texture) => {
+                itemImage.sprite = texture;
+            }));
+        }
+
+        list.Add(item);
+        itemButton.onClick.AddListener(() => {
+            Modals.instance.OpenModal<BookInfoModal>().ShowBookInfo(bookInfo);
+        });
+    }
 
     private void CleanList()
     {

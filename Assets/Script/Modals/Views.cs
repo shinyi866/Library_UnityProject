@@ -7,7 +7,7 @@ namespace View
 {
     public class Views : MonoBehaviour
     {
-        private Modal[] modals;
+        private BoxView[] views;
 
         private static Views _instance;
 
@@ -25,25 +25,25 @@ namespace View
             }
         }
 
-        private Modal currentModal;
+        private BoxView currentModal;
 
         public void SetUp()
         {
-            modals = GetComponentsInChildren<Modal>();
+            views = GetComponentsInChildren<BoxView>();
         }
 
-        public T GetView<T>() where T : Modal
+        public T GetView<T>() where T : BoxView
         {
-            return modals.First(x => typeof(T) == x.GetType()) as T;
+            return views.First(x => typeof(T) == x.GetType()) as T;
         }
 
-        public T OpenView<T>() where T : Modal
+        public T OpenView<T>() where T : BoxView
         {
-            if (modals == null) return null;
+            if (views == null) return null;
 
-            Modal targetModal = null;
+            BoxView targetModal = null;
 
-            foreach (Modal modal in modals)
+            foreach (BoxView modal in views)
             {
                 modal.Show(false);
 
@@ -68,7 +68,7 @@ namespace View
 
         public void CloseAllView()
         {
-            foreach (Modal modal in modals) { modal.Show(false); }
+            foreach (BoxView modal in views) { modal.Show(false); }
         }
     }
 }

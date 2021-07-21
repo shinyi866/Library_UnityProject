@@ -57,10 +57,18 @@ public class FindBookClassifyModal : Modal
 
             classifyList[closureIndex].GetComponent<Button>().onClick.AddListener(() =>
             {
-                var modal = Modals.instance.OpenModal<FindBookResultModal>();
-                modal.BookResult(closureIndex, classifyData.name[closureIndex]);
+                Search(closureIndex);
             });
         }
+    }
+
+    private void Search(int index)
+    {
+        var txt = classifyData.name[index];
+
+        string getBooksUrl = StringAsset.GetSearchAPIUrl(txt);
+        var modal = Modals.instance.OpenModal<FindBookResultModal>();
+        modal.ClassifyResult(getBooksUrl);
     }
 
     private void ClearList()

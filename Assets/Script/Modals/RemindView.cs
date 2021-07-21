@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using View;
 
-public class RemindView : Modal
+public class RemindView : BoxView
 {
     [SerializeField]
     private GameObject viewObject;

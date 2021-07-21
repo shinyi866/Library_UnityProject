@@ -75,6 +75,8 @@ public class PetClassifyModal : Modal
                     data.currentPet = petsItems[closureIndex];
                     Modals.instance.GetModel<MineModal>().LoadPet(data.currentPet);
                     Modals.instance.GetModel<MainModal>().ChangePet(data.currentPet);
+
+                    bgImage.sprite = petsItems[closureIndex].bgImage;
                 });
             });
         }

@@ -136,7 +136,7 @@ public class BookInfoModal : Modal
 
         var count = bookData.classify.Count;
 
-        for (int i = 0; i < count; i++)
+        for (int i = 0; i <= count; i++)
         {
             var item = Instantiate(itemObject, classifyObject.transform);
             var itemTxt = item.transform.GetChild(0).GetComponent<Text>();

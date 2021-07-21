@@ -19,7 +19,7 @@ public class FindBookModal : Modal
     [SerializeField]
     private Button searchButton;
     [SerializeField]
-    private Text searchText;
+    private InputField inputField;
 
     private AllItemObj.BookTitleItem[] titleItems;
     private AllItemObj.MoodItem[] moodData;
@@ -31,18 +31,14 @@ public class FindBookModal : Modal
         CreateItem();
 
         searchButton.onClick.AddListener(() => {
-            Search();
-        });
-    }
 
-    private void Search()
-    {
-        var txt = searchText.text;
-        searchText.text = "";
-        
-        string getBooksUrl = StringAsset.GetSearchAPIUrl(txt);
-        var modal = Modals.instance.OpenModal<FindBookResultModal>();
-        modal.FindBooks(getBooksUrl);
+            if (string.IsNullOrEmpty(inputField.text))
+                return;
+
+            var txt = inputField.text;
+            inputField.text = "";
+            Search(txt);
+        });
     }
 
     private void CreateItem()
@@ -116,9 +112,16 @@ public class FindBookModal : Modal
 
             moodButtons[closureIndex].onClick.AddListener(() =>
             {
-                var modal = Modals.instance.OpenModal<FindBookResultModal>();
-                modal.MoodResult(closureIndex, moodData[closureIndex].name);
+                var txt = moodData[closureIndex].name;
+                Search(txt);
             });
         }
+    }
+
+    private void Search(string txt)
+    {
+        string getBooksUrl = StringAsset.GetSearchAPIUrl(txt);
+        var modal = Modals.instance.OpenModal<FindBookResultModal>();
+        modal.MoodAndNameSearchResult(getBooksUrl);
     }
 }

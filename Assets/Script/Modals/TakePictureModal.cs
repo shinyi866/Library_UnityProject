@@ -54,7 +54,7 @@ public class TakePictureModal : Modal
 
     private void Start()
     {
-        ShowView(); // take picture and show
+        //ShowView(); // take picture and show
     }
 
     // take picture and show

@@ -25,6 +25,12 @@ public class AllItemObj : ScriptableObject
     }
 
     [System.Serializable]
+    public class RankItems
+    {
+        public Sprite[] topImage;
+    }
+
+    [System.Serializable]
     public struct PetsItem
     {
         public string name;
@@ -37,6 +43,7 @@ public class AllItemObj : ScriptableObject
     public BookTitleItem[] booksTitleItems;
     public BookItem[] booksItems;
     public MoodItem[] moodItems;
+    public RankItems rankItems;
     public PetsItem[] petsItems;
     public PetsItem currentPet;
 }
