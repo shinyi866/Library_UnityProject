@@ -57,6 +57,7 @@ public class LongView : BoxView
             {
                 txt.text = AllItemObj.booksItems[classify.major].name[classify.minor];
                 image.sprite = AllItemObj.booksItems[classify.major].image[classify.minor];
+                SendFeedBack(button, false);
                 bookButtons.Add(button);
             }
             catch
@@ -102,9 +103,16 @@ public class LongView : BoxView
         image.sprite = MainApp.Instance.itemData.booksItems[11].image[0];
         txt.text = MainApp.Instance.itemData.booksItems[11].name[0];
 
+        SendFeedBack(button, true);
+    }
+
+    private void SendFeedBack(Button button, bool goToCatModal)
+    {
         button.onClick.AddListener(() =>
         {
-            Modals.instance.OpenModal<BookClassifyModal>();
+            if (goToCatModal)
+                Modals.instance.OpenModal<BookClassifyModal>();
+            
             DestoryView();
             Views.instance.CloseView();
         });

@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿using UnityEngine.Networking;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -21,10 +21,13 @@ public class BookClassifyModal : Modal
     [SerializeField]
     private Transform item_H;
 
+    
+    private TypeFlag.CatForm catForm = new TypeFlag.CatForm();
     private AllItemObj.BookTitleItem[] titleItems;
     private AllItemObj.BookItem classifyData;
     private List<Button> bookButtons = new List<Button>();
     private List<GameObject> classifyList = new List<GameObject>();
+    private bool isColoChange;
 
     private void Awake()
     {
@@ -34,7 +37,6 @@ public class BookClassifyModal : Modal
     private void Start()
     {
         CreateHorizontalItem();
-        DefaultView();
     }
 
     private void CreateHorizontalItem()
@@ -53,6 +55,7 @@ public class BookClassifyModal : Modal
         }
 
         BookButtonClick();
+        DefaultView(0);
     }
 
     private void CreateVerticalItem(int index)
@@ -103,8 +106,23 @@ public class BookClassifyModal : Modal
                     var button = view.button;
                     button.onClick.AddListener(()=>
                     {
-                        // TODO: button send API suggest
-                        view.DestoryView();
+                        catForm.book_id = MainApp.Instance.currentBookData.book_id;
+                        catForm.cat = classifyData.name[closureIndex];
+                        string jsonString = JsonUtility.ToJson(catForm);
+
+                        string url = StringAsset.GetFullAPIUrl(StringAsset.API.Cat);
+                        StartCoroutine(APIRequest.PostJson(url, UnityWebRequest.kHttpVerbPOST, StringAsset.PostType.json, jsonString, (bool result)=>
+                        {
+                            if(result)
+                            {
+                                view.DestoryView();
+                            }
+                            else
+                            {
+                                view.ShowOriginRemindView(StringAsset.BookRemind.sendFail);
+                                view.button.onClick.AddListener(view.DestoryView);
+                            }
+                        }));
                     });
                     
                 });
@@ -117,18 +135,30 @@ public class BookClassifyModal : Modal
         for (int i = 0; i < bookButtons.Count; i++)
         {
             int closureIndex = i;
+            var txt = bookButtons[closureIndex].transform.GetChild(0).GetComponent<Text>();
 
             bookButtons[closureIndex].onClick.AddListener(() =>
             {
-                CreateVerticalItem(closureIndex);
+                for (int j = 0; j < bookButtons.Count; j++)
+                    bookButtons[j].transform.GetChild(0).GetComponent<Text>().color = Color.black;
+
+                if (!isColoChange)
+                {
+                    bookButtons[0].image.color = Color.white;
+                    isColoChange = true;
+                }
+
+                txt.color = Color.white;
+                CreateVerticalItem(closureIndex);                
             });
-        }
+        }   
     }
 
-    private void DefaultView()
+    private void DefaultView(int index)
     {
-        bookButtons[0].Select();
-        CreateVerticalItem(0);
+        bookButtons[index].image.color = MainApp.Instance.uiColorData.GetUIColor(TypeFlag.UIColorType.Lias).color;
+        bookButtons[index].transform.GetChild(0).GetComponent<Text>().color = Color.white;
+        CreateVerticalItem(index);
     }
 
     private void ClearList()

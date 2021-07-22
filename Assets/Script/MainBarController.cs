@@ -24,8 +24,16 @@ public class MainBarController : MonoBehaviour
         missionButton = BarObject.transform.GetChild(3).gameObject.GetComponent<Button>();
         mineButton = BarObject.transform.GetChild(4).gameObject.GetComponent<Button>();
 
-        homeButton.onClick.AddListener(() => { Modals.instance.OpenModal<MainModal>(); });
-        findButton.onClick.AddListener(() => { Modals.instance.OpenModal<FindBookModal>(); });
-        mineButton.onClick.AddListener(() => { Modals.instance.OpenModal<MineModal>(); });
+        homeButton.onClick.AddListener(() => { Modals.instance.OpenModal<MainModal>(); Modals.instance.GetModel<FindBookResultModal>().isCurrentPage = false; });
+        findButton.onClick.AddListener(() => { Modals.instance.OpenModal<FindBookModal>(); Modals.instance.GetModel<FindBookResultModal>().isCurrentPage = false; });
+        mineButton.onClick.AddListener(() => { Modals.instance.OpenModal<MineModal>(); Modals.instance.GetModel<FindBookResultModal>().isCurrentPage = false; });
+    }
+
+    public void CloseBar(bool isClose)
+    {
+        if (isClose)
+            this.gameObject.SetActive(!isClose);
+        else
+            this.gameObject.SetActive(isClose);
     }
 }

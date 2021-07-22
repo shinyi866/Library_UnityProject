@@ -19,6 +19,7 @@ public class MainApp : Singleton<MainApp>
     private UIColorObj _uiColorData;
     public UIColorObj uiColorData => _uiColorData;
 
+    public TypeFlag.BookDatabaseType currentBookData;
     private int playerGuide;
 
     private void Start()

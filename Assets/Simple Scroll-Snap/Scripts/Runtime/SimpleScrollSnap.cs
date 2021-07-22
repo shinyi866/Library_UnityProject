@@ -2,6 +2,7 @@
 // Version: 1.2.1
 // Author: Daniel Lochner
 
+using View;
 using System;
 using System.Collections.Generic;
 using UnityEditor;
@@ -110,6 +111,21 @@ namespace DanielLochner.Assets.SimpleScrollSnap
         #endregion
 
         #region Methods
+
+        public void ReSet()
+        {
+            Initialize();
+
+            if (Validate())
+            {
+                Setup();
+            }
+            else
+            {
+                throw new Exception("Invalid configuration.");
+            }
+        }
+
         private void Awake()
         {
             Initialize();
@@ -205,7 +221,7 @@ namespace DanielLochner.Assets.SimpleScrollSnap
         private bool Validate()
         {
             bool valid = true;
-
+            
             if (pagination != null)
             {
                 int numberOfToggles = pagination.transform.childCount;
@@ -218,11 +234,11 @@ namespace DanielLochner.Assets.SimpleScrollSnap
             }
 
             if (snappingSpeed < 0)
-            {
+            {              
                 Debug.LogError("<b>[SimpleScrollSnap]</b> Snapping speed cannot be negative.", gameObject);
                 valid = false;
             }
-
+            
             return valid;
         }
         private void Setup()
@@ -239,7 +255,7 @@ namespace DanielLochner.Assets.SimpleScrollSnap
             {
                 scrollRect.horizontal = scrollRect.vertical = true;
             }
-
+            
             // Panels
             size = (sizeControl == SizeControl.Manual) ? size : new Vector2(GetComponent<RectTransform>().rect.width, GetComponent<RectTransform>().rect.height);
 
@@ -438,8 +454,10 @@ namespace DanielLochner.Assets.SimpleScrollSnap
                 if (DisplacementFromCenter(TargetPanel).magnitude < (Viewport.rect.width / 10f))
                 {
                     CurrentPanel = TargetPanel;
-
                     onPanelChanged.Invoke();
+
+                    var modal = Modals.instance.GetModel<FindBookResultModal>();
+                    modal.CreateCat(CurrentPanel);
                 }
                 else
                 {

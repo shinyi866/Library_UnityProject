@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
 
 public class TypeFlag
 {
@@ -49,5 +51,19 @@ public class TypeFlag
     {
         public int major;
         public int minor;
+    }
+
+    [System.Serializable]
+    public class CatForm
+    {
+        public string cat;
+        public string book_id;
+    }
+
+    [System.Serializable]
+    public class CoverForm
+    {
+        public string book_id;
+        public byte[] f;
     }
 }

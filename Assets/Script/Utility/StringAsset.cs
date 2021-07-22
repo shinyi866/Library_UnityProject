@@ -1,6 +1,6 @@
 ﻿public class StringAsset
 {
-   public class BookRemind
+    public class BookRemind
     {
         public const string successToStudy = "這本書已經收進書房了。";
         public const string failToStudy = "哎啊，書房裡有太多還沒看的書了，先去書房看書吧！";
@@ -9,6 +9,7 @@
         public const string receiveSuggest = "我們已收到你的建議。";
         public const string moodView = "你看完的心情";
         public const string classifyView = "你覺得哪個分類不適合這本書";
+        public const string sendFail = "傳送失敗。\n請稍後再傳送一次。";
     }
 
     public class RemindButton
@@ -20,7 +21,7 @@
         public const string takePicture = "去拍照";
         public const string goToStudy = "去書房";
         public const string next = "下一步";
-        public const string start = "開始";        
+        public const string start = "開始";
     }
 
     public class Main
@@ -77,13 +78,22 @@
         public const string Host = "https://book2021.azurewebsites.net/books/";
     }
 
-   public class API
+    public class API
     {
-        public const string GetBookInfo = "books";
-        public const string GetClassify = "classify/{0}";
+        // request
         public const string Recommend = "recommend";
         public const string MostView = "most_view";
         public const string Search = "search";
+
+        //post
+        public const string Cat = "cat";
+        public const string Cover = "cover";
+    }
+
+    public class PostType
+    {
+        public const string json = "application/json";
+        public const string formData = "multipart/form-data";
     }
 
     public static string GetFullAPIUrl(string apiUrl)

@@ -7,6 +7,8 @@ namespace View
 {
     public class Modals : MonoBehaviour
     {
+        public MainBarController mainBarController;
+
         private Modal[] modals;
 
         private static Modals _instance;
@@ -90,6 +92,11 @@ namespace View
             var current = currentModal;
             currentModal = lastModal;
             lastModal = current;
+        }
+
+        public void CloseBar(bool islose)
+        {
+            mainBarController.CloseBar(islose);
         }
     }
 }

@@ -23,6 +23,8 @@ public class MainModal : Modal
     private Transform contentTransform;
     [SerializeField]
     private SimpleScrollSnap scrollSnap;
+    [SerializeField]
+    private GameObject nullObject;
 
     private Button upButton;
     private Button downButton;
@@ -59,7 +61,7 @@ public class MainModal : Modal
         text.text = StringAsset.Main.recommend;
         
         string getBooksUrl = StringAsset.GetFullAPIUrl(StringAsset.API.Recommend);
-        FindBooks(getBooksUrl);
+        FindBooks(getBooksUrl, false);
     }
 
     private void TopBooks()
@@ -68,61 +70,65 @@ public class MainModal : Modal
         text.text = StringAsset.Main.top;
 
         string getBooksUrl = StringAsset.GetFullAPIUrl(StringAsset.API.MostView);
-        FindBooks(getBooksUrl);
+        FindBooks(getBooksUrl, true);
     }
 
-    private void FindBooks(string url)
+    private void FindBooks(string url, bool isTopView)
     {
-        CleanList();
-
         StartCoroutine(APIRequest.GetRequest(url, UnityWebRequest.kHttpVerbGET, (string rawJson) => {
-            if (string.IsNullOrEmpty(rawJson))
-                return;
-
-            Debug.Log("success");
-
-            var data = JsonSerialization.FromJson<TypeFlag.BookDatabaseType>(rawJson);
-            var bookData = data.ToList();
-            var count = bookData.Count;
-
-            for (int i = count - 1; i >= count / 2; i--)
+            try
             {
-                var item = scrollSnap.AddToFront(itemObject);
-                CreateItem(item, i, bookData);
-            }
+                var data = JsonSerialization.FromJson<TypeFlag.BookDatabaseType>(rawJson);
+                var bookData = data.ToList();
+                var count = bookData.Count;
 
-            for (int i = 0; i < count / 2; i++)
+                for (int i = count - 1; i >= count / 2; i--)
+                {
+                    var item = scrollSnap.AddToFront(itemObject);
+                    CreateItem(item, i, bookData, isTopView);
+                }
+
+                for (int i = 0; i < count / 2; i++)
+                {
+                    var item = scrollSnap.AddToBack(itemObject);
+                    CreateItem(item, i, bookData, isTopView);
+                }
+
+                scrollSnap.startingPanel = count / 2;
+                scrollSnap.enabled = true;
+                scrollSnap.ReSet();
+            }
+            catch
             {
-                var item = scrollSnap.AddToBack(itemObject);
-                CreateItem(item, i, bookData);
+                var item = Instantiate(nullObject, contentTransform);
+                list.Add(item);
             }
-
-            scrollSnap.startingPanel = count / 2;
-            scrollSnap.enabled = true;
 
         }));
     }
 
-    private void CreateItem(GameObject item, int i, List<TypeFlag.BookDatabaseType> bookData)
+    private void CreateItem(GameObject item, int i, List<TypeFlag.BookDatabaseType> bookData, bool isTopView)
     {
         //var item = Instantiate(itemObject, contentTransform);
         var itemImage = item.transform.GetChild(0).GetComponent<Image>();
         var itemTxt = item.transform.GetChild(1).GetComponent<Text>();
-        var itemButton = item.GetComponent<Button>(); //item.transform.GetChild(2).GetComponent<Button>();
+        var itemButton = item.GetComponent<Button>();
         var topImage = item.transform.GetChild(3).GetChild(0).GetComponent<Image>();
         var moodImage = item.transform.GetChild(3).GetChild(1).GetComponent<Image>();
         var closureIndex = i;
         var bookInfo = bookData[closureIndex];
 
         itemTxt.text = bookInfo.name;
-        topImage.gameObject.SetActive(true);
-        topImage.sprite = allItem.rankItems.topImage[i];
         moodImage.gameObject.SetActive(true);
         moodImage.sprite = allItem.moodItems[bookInfo.mood].image;
+        topImage.gameObject.SetActive(isTopView);
+
+        if (isTopView)
+            topImage.sprite = allItem.rankItems.topImage[i];
 
         if (bookInfo.picture != null)
         {
-            StartCoroutine(APIRequest.GetTexture(bookInfo.picture, (Sprite texture) => {
+            StartCoroutine(APIRequest.GetImage(bookInfo.picture, (Sprite texture) => {
                 itemImage.sprite = texture;
             }));
         }
@@ -136,15 +142,22 @@ public class MainModal : Modal
 
     private void CleanList()
     {
-        if (list != null)
+        for (int i = 0; i < list.Count / 2; i++)
         {
-            foreach (var l in list) { Destroy(l); }
+            scrollSnap.RemoveFromFront();
+            scrollSnap.RemoveFromBack();
+        }
+
+        if (list != null)
+        {            
             list.Clear();
         }
     }
 
     private void SwitchToUpButtons(bool isOpen)
     {
+        scrollSnap.enabled = false;
+        CleanList();
         upObject.SetActive(isOpen);
         downObject.SetActive(!isOpen);
     }

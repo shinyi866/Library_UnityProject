@@ -32,7 +32,7 @@ public class BookInfoModal : Modal
     private Button moreInfoButton;
 
     private Transform buttonTransform;
-    private AllItemObj AllItemObj;
+    private AllItemObj allItemObj;
     private List<GameObject> buttons = new List<GameObject>();
     private List<GameObject> items = new List<GameObject>();
     private TypeFlag.BookDatabaseType currentBookData;
@@ -59,7 +59,7 @@ public class BookInfoModal : Modal
             CleanAllSetting();
         });
 
-        AllItemObj = MainApp.Instance.itemData;
+        allItemObj = MainApp.Instance.itemData;
     }
 
     public void ShowBookInfo(TypeFlag.BookDatabaseType bookData)
@@ -128,6 +128,7 @@ public class BookInfoModal : Modal
 
     private void LoadBookInfo(TypeFlag.BookDatabaseType bookData)
     {
+        MainApp.Instance.currentBookData = bookData;
         currentBookData = bookData;
         bookTitle.text = bookData.name;
         HaveBookCover(bookData.picture);
@@ -148,7 +149,7 @@ public class BookInfoModal : Modal
 
             if (i == count)
             {
-                var moodObj = AllItemObj.moodItems[bookData.mood];
+                var moodObj = allItemObj.moodItems[bookData.mood];
 
                 itemImage.sprite = moodObj.image;
                 itemTxt.text = moodObj.name;
@@ -160,8 +161,8 @@ public class BookInfoModal : Modal
 
                 try
                 {
-                    itemTxt.text = AllItemObj.booksItems[classify.major].name[classify.minor];
-                    itemImage.sprite = AllItemObj.booksItems[classify.major].image[classify.minor];
+                    itemTxt.text = allItemObj.booksItems[classify.major].name[classify.minor];
+                    itemImage.sprite = allItemObj.booksItems[classify.major].image[classify.minor];
                 }
                 catch
                 {
@@ -182,14 +183,14 @@ public class BookInfoModal : Modal
 
     private void HaveBookCover(string picture)
     {
-        var isOpen = !string.IsNullOrEmpty(picture);
+        var isOpen = false;//;!string.IsNullOrEmpty(picture);
 
         bookCoverImage.gameObject.SetActive(isOpen);
         noImageButton.gameObject.SetActive(!isOpen);
 
         if (isOpen)
         {
-            StartCoroutine(APIRequest.GetTexture(picture, (Sprite texture) => {
+            StartCoroutine(APIRequest.GetImage(picture, (Sprite texture) => {
                 bookCoverImage.sprite = texture;
             }));
         }
@@ -202,8 +203,7 @@ public class BookInfoModal : Modal
                 view.button.onClick.AddListener(() => {
                     view.DestoryView();
                     Modals.instance.OpenModal<TakePictureModal>();
-                    //TODO: close bar
-                    //TODO: open camera
+                    Modals.instance.CloseBar(true);
                 });
             });
         }

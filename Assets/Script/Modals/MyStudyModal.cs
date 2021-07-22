@@ -80,7 +80,7 @@ public class MyStudyModal : Modal
 
                 if (bookInfo.picture != null)
                 {
-                    StartCoroutine(APIRequest.GetTexture(bookInfo.picture, (Sprite texture) => {
+                    StartCoroutine(APIRequest.GetImage(bookInfo.picture, (Sprite texture) => {
                         itemImage.sprite = texture;
                     }));
                 }
