@@ -161,11 +161,11 @@ public class LongView : BoxView
                 {                    
                     view.DestoryView();
 
-                    var modal = Modals.instance.OpenModal<BookInfoModal>();
+                    Modals.instance.GetModel<MineModal>().AddScore(50);
+
+                    var modal = Modals.instance.GetModel<BookInfoModal>();
                     modal.ChangeReadStatus(true);
                 });
-
-                // TODO: add mood 50 power
             });
         }
     }

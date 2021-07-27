@@ -41,22 +41,22 @@ public class FindBookResultModal : Modal
     private void Awake()
     {
         allItemObj = MainApp.Instance.itemData;
+
+        backButton.onClick.AddListener(() =>
+        {
+            Modals.instance.LastModal();
+            isCurrentPage = false;
+        });
     }
 
     public void ClassifyResult(string url)
     {
-        backButton.onClick.AddListener(() => { Modals.instance.OpenModal<FindBookClassifyModal>(); isCurrentPage = false; });
-        //titleText.text = text;
-
         FindBooks(url);
         isCurrentPage = true;
     }
 
     public void MoodAndNameSearchResult(string url)
     {
-        backButton.onClick.AddListener(() => { Modals.instance.OpenModal<FindBookModal>(); isCurrentPage = false; });
-        //titleText.text = text;
-
         FindBooks(url);
         isCurrentPage = true;
     }

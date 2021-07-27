@@ -39,11 +39,24 @@ public class AllItemObj : ScriptableObject
         public Sprite bgImage;
     }
 
+    [System.Serializable]
+    public struct PetsLevelItem
+    {
+        public Mood[] level;
+    }
+
+    [System.Serializable]
+    public struct Mood
+    {
+        public Sprite[] mood;
+    }
+
     [SerializeField]
     public BookTitleItem[] booksTitleItems;
     public BookItem[] booksItems;
     public MoodItem[] moodItems;
     public RankItems rankItems;
+    public PetsLevelItem[] petsLevelItem;
     public PetsItem[] petsItems;
     public PetsItem currentPet;
 }

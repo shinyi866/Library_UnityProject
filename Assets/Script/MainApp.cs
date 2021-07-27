@@ -19,13 +19,17 @@ public class MainApp : Singleton<MainApp>
     private UIColorObj _uiColorData;
     public UIColorObj uiColorData => _uiColorData;
 
+    [HideInInspector]
     public TypeFlag.BookDatabaseType currentBookData;
     private int playerGuide;
 
     private void Start()
     {
         playerGuide = PlayerPrefs.GetInt("hasPlay");
-        itemData.currentPet = itemData.petsItems[5]; // set default pet
+        
+        var petModal = Modals.instance.GetModel<MineModal>();
+        petModal.SetLevelDefault();
+        
 
         if (playerGuide != 1)
         {
@@ -34,6 +38,6 @@ public class MainApp : Singleton<MainApp>
             // TODO: last button
 
             PlayerPrefs.SetInt("hasPlay", 1);
-        }
+        }        
     }
 }

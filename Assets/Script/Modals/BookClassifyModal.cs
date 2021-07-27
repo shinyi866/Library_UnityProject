@@ -28,10 +28,11 @@ public class BookClassifyModal : Modal
     private List<Button> bookButtons = new List<Button>();
     private List<GameObject> classifyList = new List<GameObject>();
     private bool isColoChange;
+    private int leftButtonIndex;
 
     private void Awake()
     {
-        backButton.onClick.AddListener(() => { Modals.instance.OpenModal<BookInfoModal>(); });
+        backButton.onClick.AddListener(() => { Modals.instance.LastModal(); });
     }
 
     private void Start()
@@ -41,6 +42,7 @@ public class BookClassifyModal : Modal
 
     private void CreateHorizontalItem()
     {
+        leftButtonIndex = 0;
         titleItems = MainApp.Instance.itemData.booksTitleItems;
         var bookLength = titleItems.Length;
 
@@ -55,7 +57,7 @@ public class BookClassifyModal : Modal
         }
 
         BookButtonClick();
-        DefaultView(0);
+        DefaultView(leftButtonIndex);
     }
 
     private void CreateVerticalItem(int index)
@@ -91,10 +93,12 @@ public class BookClassifyModal : Modal
                 var view = Views.instance.OpenView<RemindView>();
                 var str = string.Format(StringAsset.BookRemind.classifySuggest, titleItems[titleIndex].name, classifyData.name[closureIndex]);
 
+                DefaultView(leftButtonIndex);
+
                 view.ShowImageRemindView(str, classifyData.image[closureIndex]);
                 var leftButton = view.leftButton;
                 var rightButton = view.rightButton;
-
+                
                 leftButton.onClick.AddListener(view.DestoryView);
 
                 rightButton.onClick.AddListener(() => {
@@ -102,14 +106,14 @@ public class BookClassifyModal : Modal
 
                     view = Views.instance.OpenView<RemindView>();
                     view.ShowOriginRemindView(StringAsset.BookRemind.receiveSuggest);
-
+                    
                     var button = view.button;
                     button.onClick.AddListener(()=>
                     {
                         catForm.book_id = MainApp.Instance.currentBookData.book_id;
                         catForm.cat = classifyData.name[closureIndex];
                         string jsonString = JsonUtility.ToJson(catForm);
-
+                        
                         string url = StringAsset.GetFullAPIUrl(StringAsset.API.Cat);
                         StartCoroutine(APIRequest.PostJson(url, UnityWebRequest.kHttpVerbPOST, StringAsset.PostType.json, jsonString, (bool result)=>
                         {
@@ -144,10 +148,11 @@ public class BookClassifyModal : Modal
 
                 if (!isColoChange)
                 {
-                    bookButtons[0].image.color = Color.white;
+                    bookButtons[leftButtonIndex].image.color = Color.white;
                     isColoChange = true;
                 }
 
+                leftButtonIndex = closureIndex;
                 txt.color = Color.white;
                 CreateVerticalItem(closureIndex);                
             });
@@ -156,9 +161,11 @@ public class BookClassifyModal : Modal
 
     private void DefaultView(int index)
     {
-        bookButtons[index].image.color = MainApp.Instance.uiColorData.GetUIColor(TypeFlag.UIColorType.Lias).color;
+        bookButtons[index].image.color = MainApp.Instance.uiColorData.GetUIColor(TypeFlag.UIColorType.Lias).color;        
         bookButtons[index].transform.GetChild(0).GetComponent<Text>().color = Color.white;
         CreateVerticalItem(index);
+
+        isColoChange = false;
     }
 
     private void ClearList()

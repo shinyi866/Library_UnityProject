@@ -27,13 +27,12 @@ public class MainBarController : MonoBehaviour
         homeButton.onClick.AddListener(() => { Modals.instance.OpenModal<MainModal>(); Modals.instance.GetModel<FindBookResultModal>().isCurrentPage = false; });
         findButton.onClick.AddListener(() => { Modals.instance.OpenModal<FindBookModal>(); Modals.instance.GetModel<FindBookResultModal>().isCurrentPage = false; });
         mineButton.onClick.AddListener(() => { Modals.instance.OpenModal<MineModal>(); Modals.instance.GetModel<FindBookResultModal>().isCurrentPage = false; });
+
+        homeButton.Select();
     }
 
     public void CloseBar(bool isClose)
     {
-        if (isClose)
-            this.gameObject.SetActive(!isClose);
-        else
-            this.gameObject.SetActive(isClose);
+        gameObject.SetActive(!isClose);
     }
 }

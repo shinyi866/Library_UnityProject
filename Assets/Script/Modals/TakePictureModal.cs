@@ -30,9 +30,9 @@ public class TakePictureModal : Modal
 
         takePictureButton = this.transform.GetChild(0).GetComponent<Button>();
 
-        backButton.onClick.AddListener(() => {
-            Modals.instance.OpenModal<BookInfoModal>();
-            Modals.instance.CloseBar(true);
+        backButton.onClick.AddListener(() => {            
+            Modals.instance.LastModal();
+            Modals.instance.CloseBar(false);
             picture.sprite = null;
         });
 
@@ -53,18 +53,7 @@ public class TakePictureModal : Modal
             var view = Views.instance.OpenView<RemindView>();
             view.ShowOriginRemindView(StringAsset.TakePicture.receiveBook);
             view.button.onClick.AddListener(() => {
-
-                UploadImage(view);
-
-                bool levelup = false; // TODO: check level
-
-                if (levelup)
-                {
-                    var view1 = Views.instance.OpenView<RemindView>();
-                    var str = string.Format(StringAsset.TakePicture.updateMessage, "巧巧");//TODO: pet name
-                    view1.ShowOriginRemindView(str);
-                    view1.button.onClick.AddListener(view.DestoryView);                 
-                }                
+                UploadImage(view);            
             });
         });
     }
@@ -83,6 +72,8 @@ public class TakePictureModal : Modal
                 Destroy(currentImage);
                 rightButton.interactable = false;
                 view.DestoryView();
+
+                Modals.instance.GetModel<MineModal>().AddScore(10);
             }
             else
             {

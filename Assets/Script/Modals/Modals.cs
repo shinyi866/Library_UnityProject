@@ -10,6 +10,8 @@ namespace View
         public MainBarController mainBarController;
 
         private Modal[] modals;
+        private List<Modal> lastModals = new List<Modal>();
+        private List<Modal> rootModal = new List<Modal>();
 
         private static Modals _instance;
 
@@ -28,7 +30,15 @@ namespace View
         }
 
         private Modal currentModal;
-        private Modal lastModal;
+
+        private void Start()
+        {
+            lastModals.Add(GetModel<MainModal>());
+
+            rootModal.Add(GetModel<MainModal>());
+            rootModal.Add(GetModel<FindBookModal>());
+            rootModal.Add(GetModel<MineModal>());
+        }
 
         public void SetUp()
         {
@@ -56,9 +66,19 @@ namespace View
                     targetModal.Show(true);
                 }
 
+            }            
+
+            if (FindSameModal(rootModal, targetModal))
+            {
+                lastModals.Clear();
+                lastModals.Add(targetModal);
+            }
+            else if (currentModal != null)
+            {
+                if (!FindSameModal(lastModals, currentModal) && currentModal != GetModel<BookClassifyModal>())
+                    lastModals.Add(currentModal);
             }
 
-            lastModal = currentModal;
             currentModal = targetModal;
 
             return targetModal as T;
@@ -77,26 +97,39 @@ namespace View
 
         public void LastModal()
         {
+            if (lastModals.Count == 0) return;
+
             CloseAllModal();
-
-            if (lastModal == null)
-            {
-                lastModal = OpenModal<MainModal>();
-            }
-            else
-            {
-                lastModal.Show(true);
-            }
             
+            lastModals[lastModals.Count - 1].Show(true);
+            currentModal = lastModals[lastModals.Count - 1];
+            lastModals.RemoveAt(lastModals.Count - 1);
+        }
 
-            var current = currentModal;
-            currentModal = lastModal;
-            lastModal = current;
+        private bool FindSameModal(List<Modal> listModal, Modal _modal)
+        {
+            return listModal.Exists(m => m == _modal);
         }
 
         public void CloseBar(bool islose)
         {
             mainBarController.CloseBar(islose);
+        }
+
+        public void ChangePet(AllItemObj data, int currentInt)
+        {
+            var mine = GetModel<MineModal>();
+            var main = GetModel<MainModal>();
+            var petsItems = data.petsItems;
+            var level = PlayerPrefs.GetInt("level");
+            var mood = 1; //TODO:set mood
+
+            data.currentPet = petsItems[currentInt];
+            data.currentPet.image = data.petsLevelItem[currentInt].level[level].mood[mood];
+            PlayerPrefs.SetInt("currentPet", currentInt);
+
+            mine.LoadPet(data.currentPet);
+            main.ChangePet(data.currentPet);
         }
     }
 }

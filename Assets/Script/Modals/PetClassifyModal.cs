@@ -23,7 +23,11 @@ public class PetClassifyModal : Modal
 
     private void Awake()
     {
-        backButton.onClick.AddListener(() => { Modals.instance.OpenModal<MineModal>(); });
+        backButton.onClick.AddListener(() =>
+        {
+            //Modals.instance.OpenModal<MineModal>();
+            Modals.instance.LastModal();
+        });
     }
 
     private void Start()
@@ -72,10 +76,8 @@ public class PetClassifyModal : Modal
                 view.rightButton.onClick.AddListener(() =>
                 {
                     view.DestoryView();
-                    data.currentPet = petsItems[closureIndex];
-                    Modals.instance.GetModel<MineModal>().LoadPet(data.currentPet);
-                    Modals.instance.GetModel<MainModal>().ChangePet(data.currentPet);
 
+                    Modals.instance.ChangePet(data, closureIndex);
                     bgImage.sprite = petsItems[closureIndex].bgImage;
                 });
             });

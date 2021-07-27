@@ -22,7 +22,7 @@ public class FindBookClassifyModal : Modal
 
     private void Awake()
     {
-        backButton.onClick.AddListener(() => { Modals.instance.OpenModal<FindBookModal>(); });
+        backButton.onClick.AddListener(() => { Modals.instance.LastModal(); });
     }
 
     public void CreateItem(int index, string text)

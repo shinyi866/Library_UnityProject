@@ -52,7 +52,9 @@ public class MainModal : Modal
 
     public void ChangePet(AllItemObj.PetsItem data)
     {
-        image.sprite = data.image;
+        int level = PlayerPrefs.GetInt("level");
+        int mood = 3; // TODO: set mood
+        image.sprite = data.image; //TODO 
     }
 
     private void RecommendBooks()

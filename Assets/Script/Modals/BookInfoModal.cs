@@ -183,7 +183,7 @@ public class BookInfoModal : Modal
 
     private void HaveBookCover(string picture)
     {
-        var isOpen = false;//;!string.IsNullOrEmpty(picture);
+        var isOpen = !string.IsNullOrEmpty(picture);
 
         bookCoverImage.gameObject.SetActive(isOpen);
         noImageButton.gameObject.SetActive(!isOpen);
@@ -244,7 +244,7 @@ public class BookInfoModal : Modal
     // Use back button
     private void CleanAllSetting()
     {
-        if(buttons.Count != 0)
+        if (buttons.Count != 0)
         {
             foreach (var b in buttons) { Destroy(b); }
             buttons.Clear();
