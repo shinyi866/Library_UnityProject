@@ -9,6 +9,7 @@ public class GuideModal : Modal
     [SerializeField]
     private GameObject BarObject;
 
+    private GuideItemObj.GuideItem data;
     private Image guideImage;
     private Button nextButton;
     private int count = 0;
@@ -21,6 +22,9 @@ public class GuideModal : Modal
 
     public void ShowView(TypeFlag.GuideType type)
     {
+        data = MainApp.Instance.guideData.guideItems[(int)type];
+        guideImage.sprite = data.image1;
+
         nextButton.onClick.AddListener(()=> {
             count++;
             ButtonClick(type);
@@ -29,8 +33,8 @@ public class GuideModal : Modal
 
     private void ButtonClick(TypeFlag.GuideType type)
     {
-        var data = MainApp.Instance.guideData.guideItems[(int)type];
-        guideImage.sprite = data.image1;
+        //var data = MainApp.Instance.guideData.guideItems[(int)type];
+        //guideImage.sprite = data.image1;
 
         if (count == 1)
             guideImage.sprite = data.image2;
