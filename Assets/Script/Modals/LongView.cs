@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿using UnityEngine.Networking;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -20,6 +20,7 @@ public class LongView : BoxView
     private List<string> nameList = new List<string>();
     private List<Button> moodButtons = new List<Button>();
     private List<Button> bookButtons = new List<Button>();
+    private TypeFlag.MoodForm moodForm = new TypeFlag.MoodForm();
 
     private void Awake()
     {
@@ -160,6 +161,7 @@ public class LongView : BoxView
                 view.button.onClick.AddListener(() =>
                 {                    
                     view.DestoryView();
+                    PostMood(closureIndex);
 
                     Modals.instance.GetModel<MineModal>().AddScore(50);
 
@@ -168,6 +170,29 @@ public class LongView : BoxView
                 });
             });
         }
+    }
+
+    private void PostMood(int moodIndex)
+    {
+        moodForm.book_id = MainApp.Instance.currentBookData.book_id;
+        moodForm.user_id = "123"; // TODO: get user id
+        moodForm.mood = moodIndex;
+
+        string jsonString = JsonUtility.ToJson(moodForm);
+        string moodUrl = string.Format(StringAsset.API.Read, StringAsset.API.Mood);
+
+        string url = StringAsset.GetFullAPIUrl(moodUrl);
+        StartCoroutine(APIRequest.PostJson(url, UnityWebRequest.kHttpVerbPOST, StringAsset.PostType.json, jsonString, (bool result) =>
+        {
+            if (result)
+            {
+                Debug.Log("Post success");
+            }
+            else
+            {
+                Debug.Log("Post fail");
+            }
+        }));
     }
 
     private void CreateView(string titleText)

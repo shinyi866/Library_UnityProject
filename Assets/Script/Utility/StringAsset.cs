@@ -84,10 +84,12 @@
         public const string Recommend = "recommend";
         public const string MostView = "most_view";
         public const string Search = "search";
+        public const string Read = "read/{0}";
 
         //post
         public const string Cat = "cat";
         public const string Cover = "cover";
+        public const string Mood = "mood";
     }
 
     public class PostType

@@ -48,11 +48,13 @@ public class MyStudyModal : Modal
     {
         var changColor = isRead ? readText : notReadText;
         var notChangColor = !isRead ? readText : notReadText;
+        var readUrl = string.Format(StringAsset.API.Read,"/user_id123"); // TODO: get user id
+
         changColor.color = Color.white;
         notChangColor.color = Color.black;
 
-        string url = isRead? StringAsset.GetFullAPIUrl(StringAsset.API.MostView) : StringAsset.GetFullAPIUrl(StringAsset.API.Recommend);
-
+        string url = isRead? StringAsset.GetFullAPIUrl(readUrl) : StringAsset.GetFullAPIUrl(StringAsset.API.Recommend);
+        Debug.Log("url " + url);
         StartCoroutine(APIRequest.GetRequest(url, UnityWebRequest.kHttpVerbGET, (string rawJson) => {
             if (string.IsNullOrEmpty(rawJson))
                 return;
@@ -86,6 +88,7 @@ public class MyStudyModal : Modal
                 }
 
                 itemButton.onClick.AddListener(() => {
+                    Debug.Log("Bookinfo");
                     Modals.instance.OpenModal<BookInfoModal>().LoadBookAndChangeStatus(isRead, bookInfo);
                 });
             }

@@ -18,6 +18,12 @@ public class MineModal : Modal
     [SerializeField]
     private Transform buttonTransform;
 
+    [SerializeField]
+    private Text scoreTxt;
+
+    [SerializeField]
+    private Slider slider;
+
     public bool reset;
 
     private Button leftButton;
@@ -37,6 +43,10 @@ public class MineModal : Modal
         targetScore = PlayerPrefs.GetInt("targetScore");
         currentPetInt = PlayerPrefs.GetInt("currentPet");
         itemData = MainApp.Instance.itemData;
+
+        float value = (float)score / targetScore; ;
+        scoreTxt.text = score.ToString();
+        slider.value = value;
 
         changeButton.onClick.AddListener(() => {
             Modals.instance.OpenModal<PetClassifyModal>();
@@ -107,7 +117,7 @@ public class MineModal : Modal
     public void AddScore(int addScore)
     {
         if (score >= 1500) return;
-        if (level > 5) return;
+        if (level >= 5) return;
 
         score += addScore;
         PlayerPrefs.SetInt("score", score);

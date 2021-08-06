@@ -61,6 +61,21 @@ public class TypeFlag
     }
 
     [System.Serializable]
+    public class ReadForm
+    {
+        public string user_id;
+        public string book_id;
+    }
+
+    [System.Serializable]
+    public class MoodForm
+    {
+        public string user_id;
+        public string book_id;
+        public int mood;
+    }
+
+    [System.Serializable]
     public class CoverForm
     {
         public string book_id;

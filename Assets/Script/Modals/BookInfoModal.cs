@@ -1,10 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine.Networking;
 using UnityEngine;
 using UnityEngine.UI;
 using View;
-using System.Linq;
 
 public class BookInfoModal : Modal
 {
@@ -35,6 +33,7 @@ public class BookInfoModal : Modal
     private AllItemObj allItemObj;
     private List<GameObject> buttons = new List<GameObject>();
     private List<GameObject> items = new List<GameObject>();
+    private TypeFlag.ReadForm readForm = new TypeFlag.ReadForm();
     private TypeFlag.BookDatabaseType currentBookData;
 
     //private TypeFlag.BookDatabaseType bookData;
@@ -56,7 +55,7 @@ public class BookInfoModal : Modal
         backButton.onClick.AddListener(() =>
         {
             Modals.instance.LastModal();
-            CleanAllSetting();
+            //CleanAllSetting();
         });
 
         allItemObj = MainApp.Instance.itemData;
@@ -64,7 +63,8 @@ public class BookInfoModal : Modal
 
     public void ShowBookInfo(TypeFlag.BookDatabaseType bookData)
     {
-        CleanElementSetting();
+        CleanAllSetting();
+        //CleanElementSetting();
         barText.text = StringAsset.BookInfo.info;
 
         LoadBookInfo(bookData);
@@ -87,6 +87,7 @@ public class BookInfoModal : Modal
             remindRightButton.onClick.AddListener(() =>
             {
                 view.DestoryView();
+                PostBooks();
                 // TODO: check read or not
                 var _read = false; // online
 
@@ -122,6 +123,8 @@ public class BookInfoModal : Modal
 
     public void LoadBookAndChangeStatus(bool isRead, TypeFlag.BookDatabaseType bookData)
     {
+        //CleanElementSetting();
+        CleanAllSetting();
         LoadBookInfo(bookData);
         ChangeReadStatus(isRead);
     }
@@ -170,6 +173,26 @@ public class BookInfoModal : Modal
                 }
             }
         }
+    }
+
+    private void PostBooks()
+    {
+        readForm.book_id = MainApp.Instance.currentBookData.book_id;
+        readForm.user_id = "123"; // TODO: get user id
+        string jsonString = JsonUtility.ToJson(readForm);
+
+        string url = StringAsset.GetFullAPIUrl(StringAsset.API.Read);
+        StartCoroutine(APIRequest.PostJson(url, UnityWebRequest.kHttpVerbPOST, StringAsset.PostType.json, jsonString, (bool result) =>
+        {
+            if (result)
+            {
+                Debug.Log("Post success");
+            }
+            else
+            {
+                Debug.Log("Post fail");
+            }
+        }));
     }
 
     private void CreateButtons(string leftString, string rightString)

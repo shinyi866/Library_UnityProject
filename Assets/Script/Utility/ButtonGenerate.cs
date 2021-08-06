@@ -24,7 +24,7 @@ public class ButtonGenerate : Singleton<ButtonGenerate>
 
         button = _remindObject.transform.GetChild(0).GetComponent<Button>();        
         image = _remindObject.transform.GetChild(0).GetComponent<Image>();
-        text = _remindObject.transform.GetChild(1).gameObject.GetComponent<Text>();        
+        text = _remindObject.transform.GetChild(0).GetChild(0).gameObject.GetComponent<Text>();        
 
         text.text = txt;
         image.color = MainApp.Instance.uiColorData.GetUIColor(colorType).color;
@@ -41,7 +41,7 @@ public class ButtonGenerate : Singleton<ButtonGenerate>
 
         button = _remindObject.transform.GetChild(0).GetComponent<Button>();
         image = _remindObject.transform.GetChild(0).GetComponent<Image>();
-        text = _remindObject.transform.GetChild(1).gameObject.GetComponent<Text>();        
+        text = _remindObject.transform.GetChild(0).GetChild(0).gameObject.GetComponent<Text>();        
 
         text.text = txt;
         image.color = MainApp.Instance.uiColorData.GetUIColor(colorType).color;
